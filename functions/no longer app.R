@@ -72,7 +72,7 @@ maxt<-stopyear-startyear
 times <- seq(0, maxt, by = dt)
 tsteps<-length(times)
 
-ParLabel <- read.table('ParLabel.csv', sep=",", as.is=TRUE)
+ParLabel <- read.table('functions/ParLabel.csv', sep=",", as.is=TRUE)
 
 #non-reactive function runGMS is now outside of the server function
 runGMS<-function(initprev, scenario, param) 
@@ -201,166 +201,167 @@ runGMS<-function(initprev, scenario, param)
 }
 
 
-server <- function(input, output, session) {
-  scenario_0<-c(EDATon = 0,
-                ITNon = 0,
-                IRSon = 0,
-                MDAon = 0,
-                primon = 0,
-                MSATon = 0,
-                VACon = 0)
+scenario_0<-c(EDATon = 0,
+              ITNon = 0,
+              IRSon = 0,
+              MDAon = 0,
+              primon = 0,
+              MSATon = 0,
+              VACon = 0)
+
+scenario_iR<-(c(EDATon = EDATon,
+                ITNon = ITNon,
+                IRSon = IRSon,
+                MDAon = MDAon,
+                primon = primon,
+                MSATon = MSATon,
+                VACon = as.numeric(VACon)))
+
+parametersR <- (c(
+  bh_max0 = bh_max0,                 # bites per human per night
+  bh_max1 = bh_max1,
+  eta = eta,
+  covEDAT0 = covEDAT0,
+  covITN0 = covITN0,
+  effITN = effITN,
+  covIRS0 = covIRS0,
+  effIRS = effIRS,
+  muC = muC,
+  muA = muA,
+  muU = muU,
+  percfail2018 = percfail2018,
+  percfail2019 = percfail2019,
+  percfail2020 = percfail2020,
   
-  scenario_iR<-reactive(c(EDATon = input$EDATon,
-                          ITNon = input$ITNon,
-                          IRSon = input$IRSon,
-                          MDAon = input$MDAon,
-                          primon = input$primon,
-                          MSATon = input$MSATon,
-                          VACon = as.numeric(input$VACon)))
+  EDATscale = EDATscale,
+  covEDATi = covEDATi,
+  ITNscale = ITNscale,
+  covITNi = covITNi,
+  IRSscale = IRSscale,
+  covIRSi = covIRSi,
+  cmda_1 = cmda_1,
+  cmda_2 = cmda_2,
   
-  parametersR <- reactive(c(
-    bh_max0 = input$bh_max0,                 # bites per human per night
-    bh_max1 = input$bh_max1,
-    eta = input$eta,
-    covEDAT0 = input$covEDAT0,
-    covITN0 = input$covITN0,
-    effITN = input$effITN,
-    covIRS0 = input$covIRS0,
-    effIRS = input$effIRS,
-    muC = input$muC,
-    muA = input$muA,
-    muU = input$muU,
-    percfail2018 = input$percfail2018,
-    percfail2019 = input$percfail2019,
-    percfail2020 = input$percfail2020,
-    
-    EDATscale = input$EDATscale,
-    covEDATi = input$covEDATi,
-    ITNscale = input$ITNscale,
-    covITNi = input$covITNi,
-    IRSscale = input$IRSscale,
-    covIRSi = input$covIRSi,
-    cmda_1 = input$cmda_1,
-    cmda_2 = input$cmda_2,
-    
-    tm_1 = input$tm_1,          # timing of 1st round [2018 to 2021 - 1 month steps]
-    tm_2 = input$tm_2,          # timing of 2nd round [2018+(1/12) to 2021 - 1 month steps]
-    
-    dm0 = input$dm0,
-    dm1 = input$dm1,
-    lossd = input$lossd,
-    
-    MSATscale = input$MSATscale,
-    covMSATi = input$covMSATi,
-    MSATsensC = input$MSATsensC,
-    MSATsensA = input$MSATsensA,
-    MSATsensU = input$MSATsensU,
-    
-    effv_1 = input$effv_1,
-    effv_2 = input$effv_2,
-    
-    vh = input$vh,
-    homogen = input$homogen,
-    p1v = input$p1v,
-    
-    rhoa=input$rhoa,
-    rhou=input$rhou
-  ))
+  tm_1 = tm_1,          # timing of 1st round [2018 to 2021 - 1 month steps]
+  tm_2 = tm_2,          # timing of 2nd round [2018+(1/12) to 2021 - 1 month steps]
   
-  # initial prevalence
-  initprevR <- reactive(0.001*input$API)
+  dm0 = dm0,
+  dm1 = dm1,
+  lossd = lossd,
   
-  GMSout0R <- reactive(runGMS(initprevR(), scenario_0,parametersR()))
+  MSATscale = MSATscale,
+  covMSATi = covMSATi,
+  MSATsensC = MSATsensC,
+  MSATsensA = MSATsensA,
+  MSATsensU = MSATsensU,
   
-  GMSoutiR <- reactive(runGMS(initprevR(), scenario_iR(),parametersR()))
+  effv_1 = effv_1,
+  effv_2 = effv_2,
   
-  plotR <- function()
-  {
-    GMSout0<-GMSout0R()
-    
-    GMSouti<-GMSoutiR()
-    
-    times<-GMSout0[,1]
-    #0
-    clinmonth_det0<-cbind(GMSout0[,2],GMSouti[,2])
-    clinmonth_tot0<-cbind(GMSout0[,3],GMSouti[,3])
-    prevalence0<-cbind(GMSout0[,4],GMSouti[,4])
-    
-    runin<-(2016-startyear)/dt
-    
-    finclin0<-max(clinmonth_tot0[(runin:length(clinmonth_det0[,1])),])
-    finprev0<-max(prevalence0[(runin:length(prevalence0[,1])),])
-    
-    #1
-    clinmonth_det1<-cbind(GMSout0[,5],GMSouti[,5])
-    clinmonth_tot1<-cbind(GMSout0[,6],GMSouti[,6])
-    prevalence1<-cbind(GMSout0[,7],GMSouti[,7])
-    
-    runin<-(2016-startyear)/dt
-    
-    finclin1<-max(clinmonth_tot1[(runin:length(clinmonth_det1[,1])),])
-    finprev1<-max(prevalence1[(runin:length(prevalence1[,1])),])
-    
-    # PLOTTING
-    par(mfrow=c(1,2), cex=1.5)
-    
-    #0
-    maxy<-max(finclin0,finclin1,input$API/12)
-    x<-times[(runin:length(clinmonth_det0[,1]))]
-    y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),2]
-    y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),2]
-    
-    plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),lwd=2)
-    
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
-    
-    y1<-clinmonth_det1[runin:length(clinmonth_det1[,1]),2]
-    y2<-clinmonth_tot1[runin:length(clinmonth_tot1[,1]),2]
-    lines(x,y1, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
-    
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,1,alpha=0.4),border=NA)
-    
-    lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
-    
-    abline(h=input$API/12,col="dark blue",lty=1,lwd=1)
-    abline(h=1/12,col="red",lty=3,lwd=3)
-    maxy<-max(finprev0,finprev1)
-    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
-    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
-    lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
-    
-  }
+  vh = vh,
+  homogen = homogen,
+  p1v = p1v,
   
-  output$MODEL <- renderPlot({
-    plotR()
-  })
+  rhoa=rhoa,
+  rhou=rhou
+))
+
+# initial prevalence
+initprevR <- (0.001*API)
+
+GMSout0R <- (runGMS(initprevR, scenario_0,parametersR))
+
+GMSoutiR <- (runGMS(initprevR, scenario_iR,parametersR))
+
+plotR <- function()
+{
+  GMSout0<-GMSout0R
   
-  # output$MODEL2 <- renderPlot({
-  #   plotR2()
-  # })
+  GMSouti<-GMSoutiR
   
-  output$downloadplot <- downloadHandler(
-    filename = function(){paste('MalMod_',gsub("\\:","",Sys.time()),'.png',sep='')},
-    content = function(file) {
-      png(filename=file, height= 1600, width=4800, units= "px", res=300) #if(...=="png"){png(file)} else if(...=="pdf"){pdf(file)}
-      plotR()
-      dev.off()
-    })
+  times<-GMSout0[,1]
+  #0
+  clinmonth_det0<-cbind(GMSout0[,2],GMSouti[,2])
+  clinmonth_tot0<-cbind(GMSout0[,3],GMSouti[,3])
+  prevalence0<-cbind(GMSout0[,4],GMSouti[,4])
   
-  tableContentR <- reactive({
-    tmp <- c(scenario_iR(), input$API, parametersR())
-    tmp2 <- cbind(ParLabel[,1], tmp, ParLabel[,2], names(tmp))
-    colnames(tmp2) <- c("Name","Value","Unit","VarName")
-    tmp2
-  })
+  runin<-(2016-startyear)/dt
   
-  output$downloadTable <- downloadHandler(
-    filename = function(){paste('MalMod_',gsub("\\:","",Sys.time()),'.csv',sep='')},
-    content = function(file) {
-      write.csv(tableContentR(), file, row.names = FALSE)
-    })
+  finclin0<-max(clinmonth_tot0[(runin:length(clinmonth_det0[,1])),])
+  finprev0<-max(prevalence0[(runin:length(prevalence0[,1])),])
+  
+  #1
+  clinmonth_det1<-cbind(GMSout0[,5],GMSouti[,5])
+  clinmonth_tot1<-cbind(GMSout0[,6],GMSouti[,6])
+  prevalence1<-cbind(GMSout0[,7],GMSouti[,7])
+  
+  runin<-(2016-startyear)/dt
+  
+  finclin1<-max(clinmonth_tot1[(runin:length(clinmonth_det1[,1])),])
+  finprev1<-max(prevalence1[(runin:length(prevalence1[,1])),])
+  
+  # PLOTTING
+  par(mfrow=c(1,2), cex=1.5)
+  
+  #0
+  maxy<-max(finclin0,finclin1,API/12)
+  x<-times[(runin:length(clinmonth_det0[,1]))]
+  y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),2]
+  y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),2]
+  
+  plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
+  lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),lwd=2)
+  
+  polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
+  
+  y1<-clinmonth_det1[runin:length(clinmonth_det1[,1]),2]
+  y2<-clinmonth_tot1[runin:length(clinmonth_tot1[,1]),2]
+  lines(x,y1, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
+  lines(x,y2, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
+  
+  polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,1,alpha=0.4),border=NA)
+  
+  lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
+  
+  abline(h=API/12,col="dark blue",lty=1,lwd=1)
+  abline(h=1/12,col="red",lty=3,lwd=3)
+  maxy<-max(finprev0,finprev1)
+  plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+  lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+  lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
+  
 }
 
-shinyApp(ui = ui, server = server)
+png(filename=paste('results_homo_cov/plot_',gsub("\\:","",Sys.time()),'.png',sep=''), height= 1600, width=4800, units= "px", res=300) #if(...=="png"){png(file)} else if(...=="pdf"){pdf(file)}
+plotR()
+dev.off()
+# output$MODEL <- renderPlot({
+#   plotR()
+# })
+
+# output$MODEL2 <- renderPlot({
+#   plotR2()
+# })
+
+# output$downloadplot <- downloadHandler(
+#   filename = function(){paste('MalMod_',gsub("\\:","",Sys.time()),'.png',sep='')},
+#   content = function(file) {
+#     png(filename=file, height= 1600, width=4800, units= "px", res=300) #if(...=="png"){png(file)} else if(...=="pdf"){pdf(file)}
+#     plotR()
+#     dev.off()
+#   })
+
+tableContentR <- ({
+  tmp <- c(scenario_iR, API, parametersR)
+  tmp2 <- cbind(ParLabel[,1], tmp, ParLabel[,2], names(tmp))
+  colnames(tmp2) <- c("Name","Value","Unit","VarName")
+  tmp2
+})
+
+#   output$downloadTable <- downloadHandler(
+#     filename = function(){paste('MalMod_',gsub("\\:","",Sys.time()),'.csv',sep='')},
+#     content = function(file) {
+#       write.csv(tableContentR(), file, row.names = FALSE)
+#     })
+# }
+

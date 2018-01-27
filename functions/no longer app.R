@@ -1,118 +1,67 @@
+setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 library(deSolve)
 library(shiny)
 library(TSA)
 library(Rcpp)
-sourceCpp("modGMS.cpp")
+library(stringr)
+sourceCpp("functions/modGMS.cpp")
 
 
-ui <- fluidPage(
-  tabsetPanel(
-    id="panels",
-    tabPanel(title = strong("Baseline"),
-             column(3,
-                    sliderInput(inputId="API", label = "baseline API", value = 2.5, min=1, max=100,step=0.5),
-                    sliderInput(inputId="eta", label = "% of all infections that are caught outside the village (forest)", value = 30, min=0, max=100,step=10),
-                    sliderInput(inputId="covEDAT0", label = "baseline % of all clinical cases treated", value = 25, min=0, max=100)
-             ),
-             column(3,
-                    sliderInput(inputId="covITN0", label = "baseline coverage of ITN (%) ", value = 70, min=0, max=90,step=.5),
-                    sliderInput(inputId="effITN", label = "% of infections averted due to ownership of ITN ", value = 30, min=0, max=50), 
-                    sliderInput(inputId="covIRS0", label = "baseline coverage of IRS (%) ", value = 0, min=0, max=90,step=10),
-                    sliderInput(inputId="effIRS", label = "% reduction in biting rate due to IRS ", value = 15, min=0, max=25,step=5)
-             ),
-             column(3,
-                    sliderInput(inputId="muC", label = "imported clinical cases per 1000 population per year ", value = 1, min=0, max=10,step=1),
-                    sliderInput(inputId="muA", label = "imported asymptomatic microscopically detectable carriers per 1000 population per year ", value = 1, min=0, max=100,step=1),
-                    sliderInput(inputId="muU", label = "imported asymptomatic microscopically undetectable carriers per 1000 population per year ", value = 1, min=0, max=100,step=1)
-             ),
-             column(3,
-                    sliderInput(inputId="percfail2018", label = "% of cases failing treatment in 2018 and before ", value = 5, min=0, max=100,step=5),
-                    sliderInput(inputId="percfail2019", label = "% of cases failing treatment in 2019  ", value = 15, min=0, max=100,step=5),
-                    sliderInput(inputId="percfail2020", label = "% of cases failing treatment in 2020 and after  ", value = 30, min=0, max=100,step=5)
-             )
-    ),
-    tabPanel(title= strong("Transmissibility"),
-             column(4,
-                    wellPanel(
-                      h3("Human Biting Rate"),
-                      sliderInput(inputId="bh_max0", label = "number of mosquito bites per human per night (peak season) village 1", value = 16, min=0, max=80,step=1),
-                      sliderInput(inputId="bh_max1", label = "number of mosquito bites per human per night (peak season) village 2", value = 16, min=0, max=80,step=1)
-                    )),
-             column(4,
-                    wellPanel(
-                      h3("Transmissibility compared to Clinical cases"),
-                      sliderInput(inputId = "rhoa", label = "relative infectivity of asymptomatic microscopically detectable carriers compared with clinical infections (%)", value = 55, min = 17, max=80,step=1),
-                      sliderInput(inputId = "rhou", label = "relative infectivity of asymptomatic microscopically undetectable carriers compared with clinical infections (%)", value = 17, min = 1, max=60,step=1)
-                    ))),
-    
-    tabPanel(title = strong("Interventions currently available"),
-             column(4,
-                    wellPanel(
-                      h3("Early Diagnosis and Treatment"),
-                      checkboxInput(inputId="EDATon", label = "switch on scale up of EDAT ", value = TRUE),
-                      checkboxInput(inputId="primon", label = "ACT+primaquine for EDAT and MDA ", value = FALSE), #under EDAT checkbox
-                      sliderInput(inputId="EDATscale", label = "years to scale up EDAT ", value = 1, min=.25, max=3, step=.25),
-                      sliderInput(inputId="covEDATi", label = "new % of all clinical cases treated", value = 70, min=0, max=100,step=5)
-                    )), 
-             column(4,wellPanel(
-                      h3("Insecticide Treated Net (LLIN)"),
-                      checkboxInput(inputId="ITNon", label = "switch on scale up of LLIN", value = TRUE),
-                      sliderInput(inputId="ITNscale", label = "years to universal access to LLIN", value = 1, min=.25, max=3, step=.25),
-                      sliderInput(inputId="covITNi", label = "new bed-net use of LLIN (%)", value = 90, min=0, max=90,step=5)
-                    )),
-             column(4,wellPanel(
-               h3("Indoor Residual Spray"),
-               checkboxInput(inputId="IRSon", label = "switch on scale up of IRS ", value = FALSE),
-               sliderInput(inputId="IRSscale", label = "years to scale up IRS ", value = 1, min=.25, max=3, step=.25),
-               sliderInput(inputId="covIRSi", label = "new coverage of IRS (%) ", value = 90, min=0, max=90,step=5)
-             ))
-  ),
-  tabPanel(title = strong("Interventions under trial: Focal MVDA (hotspot)"),
-                     column(3,
-                            checkboxInput(inputId="MDAon", label = "switch on MDA", value = TRUE), #6
-                            sliderInput(inputId="lossd", label = "days prophylaxis provided by the ACT", value = 30, min=15, max=30,step=1),
-                            sliderInput(inputId="dm0", label = "months to complete MDA in village 1", value = 3, min=1, max=24,step=0.5),
-                            sliderInput(inputId="dm1", label = "months to complete MDA in village 2", value = 3, min=1, max=24,step=0.5)
-                            
-                     ),
-                     column(3,
-                            sliderInput(inputId="cmda_1", label = "local population coverage of MDA in village 1", value = 90, min=0, max=99,step=1),
-                            sliderInput(inputId="cmda_2", label = "local population coverage of MDA in village 2", value = 50, min=0, max=99,step=1),
-                            sliderInput(inputId="homogen", label = "% homogeniety", value = 0, min=0, max=100,step=1)
-                     ),
-                     
-                     column(3,
-                            sliderInput(inputId="tm_1", label = "timing of 1st MDA round in 1st village [2018+ no. of month]", value = 9, min=1, max=36,step=1),
-                            sliderInput(inputId="tm_2", label = "timing of 1st MDA round in 2nd village [2018+ no. of month]", value = 9, min=1, max=36,step=1),
-                            sliderInput(inputId="p1v", label = "proportion of total in village 1 (remaining is in village 2)", value = .5, min=0.01, max=.99,step=.1)
-                     ),
-                     column(3,
-                            radioButtons(inputId="VACon", label = "With vaccination: ", choices = c("No"=0, "Yes"=1), selected = 0, inline=TRUE),
-                            sliderInput(inputId="effv_1", label = "% protective efficacy of RTS,S with 1st dose", value = 75, min=0, max=100),
-                            sliderInput(inputId="effv_2", label = "% protective efficacy of RTS,S with 2nd dose", value = 80, min=0, max=100),
-                            sliderInput(inputId="vh", label = "half-life of vaccine protection (days)", value = 90, min=10, max=500,step=10)
-                     )
-            ),
-            tabPanel(title = strong("Interventions under trial: Focal MSAT (mobile)"),
-                     column(3,
-                            checkboxInput(inputId="MSATon", label = "switch on MSAT for imported cases", value = TRUE),
-                            sliderInput(inputId="MSATscale", label = "years to scale up MSAT ", value = 1, min=.25, max=3, step=.25), 
-                            sliderInput(inputId="covMSATi", label = "new coverage of MSAT (%)", value = 90, min=0, max=100,step=10)
-                     ),
-                     column(3,
-                            sliderInput(inputId="MSATsensC", label = "sensitivity HS RDT (clinical) ", value = 99, min=0, max=100,step=5),
-                            sliderInput(inputId="MSATsensA", label = "sensitivity HS RDT (micro detectable, asym)", value = 87, min=0, max=100,step=5),
-                            sliderInput(inputId="MSATsensU", label = "sensitivity HS RDT (micro undetectable, asym)", value = 44, min=0, max=100,step=5)
-                     )
-            ),
-            tabPanel(title= strong("Download"),
-                     br(),
-                     downloadButton("downloadTable", "Download current values of parameters"),
-                     downloadButton("downloadplot","Download high resolution figure"))
-  ),
-  fluidRow(plotOutput(outputId = "MODEL"))
-  
-)
+####non-reactive parameters####
+####interventions####
+EDATon = TRUE
+ITNon = TRUE
+IRSon = FALSE
+MDAon = TRUE
+primon = FALSE
+MSATon = TRUE
+VACon = FALSE
+
+####non-reactive functions####
+#got from the "parameters" folder
+API <- 2.5
+eta <- 30
+covEDAT0 <- 25
+covITN0 <- 70
+effITN <- 30
+covIRS0 <- 0
+effIRS <- 15
+muC <- 1
+muA <- 1
+muU <- 1
+percfail2018 <- 5
+percfail2019 <- 15
+percfail2020 <- 30
+bh_max0 <- 16
+bh_max1 <- 16
+rhoa <- 55
+rhou <- 17
+EDATscale <- 1
+covEDATi <- 70
+ITNscale <- 1
+covITNi <- 90
+IRSscale <- 1
+covIRSi <- 90
+lossd <- 30
+dm0 <- 3
+dm1 <- 3
+cmda_1 <- 90
+cmda_2 <- 50
+homogen <- 0
+tm_1 <- 9
+tm_2 <- 9
+p1v <- 0.5
+effv_1 <- 75
+effv_2 <- 80
+vh <- 90
+MSATscale <- 1
+covMSATi <- 90
+MSATsensC <- 99
+MSATsensA <- 87
+MSATsensU <- 44
+
+
+
 
 #non-reactive parameters
 # define the number of weeks to run the model

@@ -1,3 +1,4 @@
+#see #scenario tag for things to change in each scenario
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 library(deSolve)
 library(shiny)
@@ -18,7 +19,7 @@ MSATon = TRUE
 VACon = FALSE
 
 ####non-reactive functions####
-#got from the "parameters" folder
+#got from the "parameters" folder #scenario
 API <- 2.5
 eta <- 30
 covEDAT0 <- 25
@@ -273,6 +274,14 @@ GMSout0R <- (runGMS(initprevR, scenario_0,parametersR))
 
 GMSoutiR <- (runGMS(initprevR, scenario_iR,parametersR))
 
+#labeling the columns
+outLab <- c("year","detectedIncidence1","totalIncidence1","prevalence1","detectedIncidence2","totalIncidence2","prevalence2")
+colnames(GMSout0R) <- colnames(GMSoutiR) <- outLab
+
+################################################################
+#below is just testing the app to see if it's still working#####
+################################################################
+
 plotR <- function()
 {
   GMSout0<-GMSout0R
@@ -332,6 +341,7 @@ plotR <- function()
   
 }
 
+#scenario
 png(filename=paste('results_homo_cov/plot_',gsub("\\:","",Sys.time()),'.png',sep=''), height= 1600, width=4800, units= "px", res=300) #if(...=="png"){png(file)} else if(...=="pdf"){pdf(file)}
 plotR()
 dev.off()
@@ -351,12 +361,12 @@ dev.off()
 #     dev.off()
 #   })
 
-tableContentR <- ({
-  tmp <- c(scenario_iR, API, parametersR)
-  tmp2 <- cbind(ParLabel[,1], tmp, ParLabel[,2], names(tmp))
-  colnames(tmp2) <- c("Name","Value","Unit","VarName")
-  tmp2
-})
+# tableContentR <- ({
+#   tmp <- c(scenario_iR, API, parametersR)
+#   tmp2 <- cbind(ParLabel[,1], tmp, ParLabel[,2], names(tmp))
+#   colnames(tmp2) <- c("Name","Value","Unit","VarName")
+#   tmp2
+# })
 
 #   output$downloadTable <- downloadHandler(
 #     filename = function(){paste('MalMod_',gsub("\\:","",Sys.time()),'.csv',sep='')},

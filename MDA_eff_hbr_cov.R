@@ -3,8 +3,10 @@
 #20180213
 
 #see #scenario tag for things to change in each scenario
-#x axis variable: hb_max, [0 to 25] %
-#y axis variable: cmda_2, [0 to 80] %, coverage of MDA in second village
+#x axis variable: hb_max, [1 to 25] %
+xval <- 25
+#y axis variable: cmda_2, [1 to 80] %, coverage of MDA in second village
+yval <- 80
 
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 library(deSolve)
@@ -18,8 +20,8 @@ source("functions/no longer app.R")
 
 #scenario
 ##initialize input and output storage####
-testfor2j <- rep(1:25,80)
-testfor2i <- rep(1:80,each=25)
+testfor2j <- rep(1:xval,yval)
+testfor2i <- rep(1:yval,each=xval)
 testfor2 <- cbind(testfor2j,testfor2i)
 # colnames(testfor2) <- c('homogen','cmda_2')
 colnames(testfor2) <- NULL
@@ -28,7 +30,7 @@ successwithin <- 6
 result <- list()
 #scenario
 ####for template####
-# for(i in 1:80){
+# for(i in 1:yval){
 #   for(j in 1:100){
 #     homogen <- testfor2[((i-1)*100)+j,1]
 #     cmda_2 <- testfor2[((i-1)*100)+j,2]
@@ -117,10 +119,10 @@ initprevR <- (0.001*API)
 
 
 ####for loop#####
-for(i in 1:80){
-  for(j in 1:25){
-    bh_max0 <- bh_max1 <- testfor2[((i-1)*25)+j,1]
-    cmda_2 <- testfor2[((i-1)*25)+j,2]
+for(i in 1:yval){
+  for(j in 1:xval){
+    bh_max0 <- bh_max1 <- testfor2[((i-1)*xval)+j,1]
+    cmda_2 <- testfor2[((i-1)*xval)+j,2]
     ###other codes for running the model
     
     scenario_iR<-(c(EDATon = EDATon,
@@ -197,7 +199,7 @@ for(i in 1:80){
     
     successMDA <- cbind(MDAsuccessV1, MDAsuccessV2)
     
-    result[[((i-1)*25)+j]] <- successMDA #scenario
+    result[[((i-1)*xval)+j]] <- successMDA #scenario
   }
 }
 #time component #scenario
@@ -224,16 +226,16 @@ village2 <- sapply(result, function(x){
 })
 
 #putting into matrix
-v1m <- matrix(as.numeric(village1),nrow=80,ncol=25, byrow=TRUE)
+v1m <- matrix(as.numeric(village1),nrow=yval,ncol=xval, byrow=TRUE)
 #heatmap(v1m, Rowv=NA, Colv = NA)
-#v1md <- as.data.frame(as.numeric(village1),nrow=80,ncol=100, byrow=TRUE)
+#v1md <- as.data.frame(as.numeric(village1),nrow=yval,ncol=100, byrow=TRUE)
 levelplot(t(v1m))
 
-v2m <- matrix(as.numeric(village2),nrow=80,ncol=25, byrow=TRUE)
+v2m <- matrix(as.numeric(village2),nrow=yval,ncol=xval, byrow=TRUE)
 #heatmap(v2m, Rowv=NA, Colv = NA)
 levelplot(t(v2m))
 
-v12m <- matrix(as.numeric(village1),nrow=80,ncol=25, byrow=TRUE)+matrix(as.numeric(village2),nrow=80,ncol=25, byrow=TRUE)
+v12m <- matrix(as.numeric(village1),nrow=yval,ncol=xval, byrow=TRUE)+matrix(as.numeric(village2),nrow=yval,ncol=xval, byrow=TRUE)
 #heatmap(v12m, Rowv=NA, Colv = NA, col=heat.colors(3))
 #write.csv(v12m,'results_homo_cov/v12m.csv')
 

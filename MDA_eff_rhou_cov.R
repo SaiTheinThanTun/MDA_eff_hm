@@ -1,10 +1,10 @@
 #MDA_eff_hm
-#MDA success on hbr vs coverage
+#MDA success on rhou vs coverage
 #20180213
 
 #see #scenario tag for things to change in each scenario
-#x axis variable: hb_max, [1 to 25] %
-xval <- 25
+#x axis variable: rhou, [1 to 50] %, % transmissibility of asymptomatic undetectable
+xval <- 50
 #y axis variable: cmda_2, [1 to 80] %, coverage of MDA in second village
 yval <- 80
 
@@ -64,8 +64,8 @@ muU <- 1
 percfail2018 <- 5
 percfail2019 <- 15
 percfail2020 <- 30
-#bh_max0 <- 16 #scenario
-#bh_max1 <- 16 #scenario
+bh_max0 <- 16 #scenario
+bh_max1 <- 16 #scenario
 rhoa <- 55
 rhou <- 17
 EDATscale <- 1
@@ -79,7 +79,7 @@ dm0 <- 3
 dm1 <- 3
 cmda_1 <- 90
 #cmda_2 <- 50 #scenario
-homogen <- 20 #scenario, 80, 50, 20
+homogen <- 80 #scenario, 80, 50, 20
 tm_1 <- 9
 tm_2 <- 9
 p1v <- 0.5
@@ -122,7 +122,7 @@ initprevR <- (0.001*API)
 for(i in 1:yval){
   for(j in 1:xval){
     #scenario
-    bh_max0 <- bh_max1 <- testfor2[((i-1)*xval)+j,1]
+    rhou <- testfor2[((i-1)*xval)+j,1]
     cmda_2 <- testfor2[((i-1)*xval)+j,2]
     ###other codes for running the model
     
@@ -206,7 +206,7 @@ for(i in 1:yval){
 #time component #scenario
 #outside of 'for' loop
 #write.table(GMSoutiR[,1],'parameters/times.csv', col.names = 'time', row.names = FALSE)
-saveRDS(result, paste('results_hbr_cov/results_',gsub("\\:","",Sys.time()),'.rds',sep=''))
+saveRDS(result, paste('results_rhou_cov/results_',gsub("\\:","",Sys.time()),'.rds',sep=''))
 #scenario
 
 #Analysing the data list 'results_.rds'####
@@ -241,9 +241,9 @@ v12m <- matrix(as.numeric(village1),nrow=yval,ncol=xval, byrow=TRUE)+matrix(as.n
 #write.csv(v12m,'results_homo_cov/v12m.csv')
 
 new.palette=colorRampPalette(c("red","black"),space="rgb")
-levelplot(t(v12m), col.regions=new.palette, xlab="HBR", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
+levelplot(t(v12m), col.regions=new.palette, xlab="% transmissibility of asymptomatic undetectable", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
 
-png(paste('results_hbr_cov/hbr_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-levelplot(t(v12m), col.regions=new.palette, xlab="HBR", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold\n % homogeniety=",homogen, sep = ""))
+png(paste('results_rhou_cov/hbr_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+levelplot(t(v12m), col.regions=new.palette, xlab="% transmissibility of asymptomatic undetectable", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold\n % homogeniety=",homogen, sep = ""))
 dev.off()
 

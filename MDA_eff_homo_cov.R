@@ -75,7 +75,7 @@ covIRSi <- 90
 lossd <- 30
 dm0 <- 3
 dm1 <- 3
-cmda_1 <- 90
+cmda_1 <- 80 #90
 #cmda_2 <- 50 #scenario
 #homogen <- 0 #scenario
 tm_1 <- 9
@@ -215,6 +215,7 @@ MDAstart <- which(timeVector==(2018+tm_1/12))
 #draft
 #result[[1]][MDAstart:(MDAstart+successwithin),]
 #sum(result[[1]][MDAstart:(MDAstart+successwithin),1])>0
+##success within 6 months is necessary as some of the scenarios produces elimination eventually
 
 village1 <- sapply(result, function(x){
   sum(x[MDAstart:(MDAstart+successwithin),1])>0
@@ -241,6 +242,6 @@ new.palette=colorRampPalette(c("red","black"),space="rgb")
 levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
 
 png(paste('results_homo_cov/homogeniety_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
+levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold \n MDA coverage in village 1:", cmda_1))
 dev.off()
 

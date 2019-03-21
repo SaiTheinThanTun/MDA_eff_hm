@@ -243,7 +243,7 @@ v12m <- matrix(as.numeric(village1),nrow=yval,ncol=xval, byrow=TRUE)+matrix(as.n
 new.palette=colorRampPalette(c("red","black"),space="rgb")
 levelplot(t(v12m), col.regions=new.palette, xlab="% of total in village 1", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
 
-png(paste('results_p1v_cov/hbr_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+png(paste('results_p1v_cov/p1v_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 levelplot(t(v12m), col.regions=new.palette, xlab="% of total in village 1", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold\n % homogeniety=",homogen, sep = ""))
 dev.off()
 

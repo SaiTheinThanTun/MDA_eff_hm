@@ -59,8 +59,8 @@ runGMS<-function(initprev, scenario, param)
     tmp<-modGMSrcpp(t,state,parameters)
     return(list(tmp))
   }
-  #out <- ode(y = state, times = times, func = WmodGMSrcpp, parms = parameters)
-  out <- ode(y = state, times = times, func = WmodGMSrcpp, parms = parameters, method="vode")
+  out <- ode(y = state, times = times, func = WmodGMSrcpp, parms = parameters)
+  #out <- ode(y = state, times = times, func = WmodGMSrcpp, parms = parameters, method="vode")
   
   # MODEL OUTPUTS
   ipop1 <- 5:12

@@ -4,6 +4,7 @@
 
 #see #scenario tag for things to change in each scenario
 #x axis variable: hb_max, [1 to 25] %
+#xval <- 100 #for homogeniety
 xval <- 25
 #y axis variable: cmda_2, [1 to 80] %, coverage of MDA in second village
 yval <- 80
@@ -120,6 +121,7 @@ initprevR <- (0.001*API)
 #Analysing the data list 'results_.rds'####
 #result <- readRDS("results_hbr_cov/results_2018-02-13 135254_20H.rds")
 result <- readRDS("results_hbr_cov/results_2018-02-13 123815_80H.rds")
+#result <- readRDS("results_homo_cov_start0/results_loop_1_2019-03-22 003309.rds")
 
 timeVector <- read.csv('parameters/times.csv')
 MDAstart <- which(timeVector==(2018+tm_1/12))
@@ -152,7 +154,7 @@ v12m <- matrix(as.numeric(village1),nrow=yval,ncol=xval, byrow=TRUE)+matrix(as.n
 new.palette=colorRampPalette(c("red","black"),space="rgb")
 levelplot(t(v12m), col.regions=new.palette, xlab="HBR", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
 
-png(paste('results_hbr_cov/hbr_MDAcoverage_12hr_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+png(paste('results_hbr_cov_start0/hbr_MDAcoverage_12hr_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 levelplot(t(v12m), col.regions=new.palette, xlab="HBR", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold\n % homogeniety=",homogen, sep = ""))
 dev.off()
 

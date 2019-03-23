@@ -15,7 +15,7 @@ library(TSA)
 library(Rcpp)
 library(stringr)
 library(lattice)
-sourceCpp("functions/modGMS.cpp")
+sourceCpp("functions/modGMS_seas.cpp")
 source("functions/no longer app.R")
 
 #scenario
@@ -212,7 +212,7 @@ for(i in 1:81){
 #outside of 'for' loop
 #write.table(GMSoutiR[,1],'parameters/times.csv', col.names = 'time', row.names = FALSE)
 #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
-saveRDS(result, paste('results_homo_cov_start0/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
+saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #with seasonality on [switch is inside modGMS.cpp]
 #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #scenario

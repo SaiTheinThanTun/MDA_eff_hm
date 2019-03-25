@@ -8,7 +8,7 @@ library(shiny)
 library(TSA)
 library(Rcpp)
 library(stringr)
-library(lattice)
+#library(lattice)
 library(ggplot2)
 library(reshape)
 sourceCpp("functions/modGMS.cpp")
@@ -22,25 +22,17 @@ successwithin <- 12 #6
 
 #tmp2 <- NA
 for(loop in 1:10){
-# for(loop in seq(1:10)[-2]){
-#loop
-
-#loop <- 10
-#result <- readRDS(paste("results_homo_cov_start0/results_loop_", loop,".rds", sep=""))
+result <- readRDS(paste("results_homo_cov_start0/results_loop_", loop,".rds", sep=""))
 
   #testing####
-loop <- 1
-result <- readRDS("results_homo_cov_start0/results_loop_1_2019-03-22 141427.rds")
+#loop <- 1
+#result <- readRDS("results_homo_cov_start0/results_loop_1_2019-03-22 141427.rds")
 #result <- readRDS("results_homo_cov/results_2019-02-14 150440.rds")
 cmda_1 <- cmda_1Loop[loop]#80 #90
 
-#find where the invalid result is
-#tmp <- sapply(result, function(x){(nrow(x)<193)})
-#tmp2[loop] <- sum(tmp)
-#which(tmp==TRUE)
 
-#result[[1501]]
-
+#how soon is the outcome?
+#within the "successwithin" period####
 village1 <- sapply(result, function(x){
   sum(x[MDAstart:(MDAstart+successwithin),1])>0
 })
@@ -48,26 +40,33 @@ village2 <- sapply(result, function(x){
   sum(x[MDAstart:(MDAstart+successwithin),2])>0
 })
 
+#at exactly "successwithin" from MDA start####
+# village1 <- sapply(result, function(x){
+#   x[(MDAstart+successwithin),1]==TRUE
+# })
+# village2 <- sapply(result, function(x){
+#   x[(MDAstart+successwithin),2]==TRUE
+# })
+
 #putting into matrix
 v1m <- matrix(as.numeric(village1),nrow=81,ncol=101, byrow=TRUE)
-#heatmap(v1m, Rowv=NA, Colv = NA)
-#v1md <- as.data.frame(as.numeric(village1),nrow=80,ncol=100, byrow=TRUE)
-levelplot(t(v1m))
-
 v2m <- matrix(as.numeric(village2),nrow=81,ncol=101, byrow=TRUE)
-#heatmap(v2m, Rowv=NA, Colv = NA)
-levelplot(t(v2m))
-
 v12m <- matrix(as.numeric(village1),nrow=81,ncol=101, byrow=TRUE)+matrix(as.numeric(village2),nrow=81,ncol=101, byrow=TRUE)
-#heatmap(v12m, Rowv=NA, Colv = NA, col=heat.colors(3))
-#write.csv(v12m,'results_homo_cov/v12m.csv')
 
-new.palette=colorRampPalette(c("red","black"),space="rgb")
-levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
+toPlot <- melt(t(v12m))
 
-png(paste('results_homo_cov_start0/newPlot/homogeniety_MDAcoverage_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold \n MDA coverage in village 1:", cmda_1))
+#within the "successwithin" period####
+png(paste('results_homo_cov_start0/newPlot_within/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+#at exactly "successwithin" from MDA start####
+#png(paste('results_homo_cov_start0/newPlot_exactlyAt1Yr/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+
+print(
+ggplot(data=toPlot, aes(x=X1, y=X2))+
+  geom_tile(aes(fill=factor(value)))+
+  ggtitle(paste0("No. of villages getting below elimination threshold\nMDA coverage in village1: ",cmda_1))+
+  xlab("% of homogeniety")+ylab("% of MDA coverage in village 2")+
+  theme(legend.position = "bottom")+
+  scale_fill_manual(name="# of village", labels=c("zero", "one village", "two villages"),values=c("#999999", "#E69F00", "#56B4E9"))
+)
 dev.off()
 }
-###
-

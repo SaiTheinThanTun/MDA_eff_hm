@@ -1,8 +1,10 @@
-#for loop for changing MDA coverage in the first village
+#for loop for changing homogeneity between the two villages
 
 #MDA_eff_hm
-#MDA success on homogeniety vs coverage
-#20180124
+#X: HBR in village 2; 
+#Y: MDA coverage in both villages; 
+#Z: changing homogeneity; HBR in village 1 is fixed at 16
+#20190402
 
 #see #scenario tag for things to change in each scenario
 #x axis variable: homogen, [0 to 100] %
@@ -54,8 +56,8 @@ VACon = FALSE
 
 ####non-reactive functions####
 #got from the "parameters" folder #scenario
-cmda_1Loop <- seq(0, by=10, to=90)
-for(loop in 1:length(cmda_1Loop)){
+homoLoop <- seq(0, by=10, to=100)
+for(loop in 1:length(homoLoop)){
   
 result <- list()
   
@@ -223,7 +225,7 @@ for(i in 1:81){
 #outside of 'for' loop
 #write.table(GMSoutiR[,1],'parameters/times.csv', col.names = 'time', row.names = FALSE)
 #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
-saveRDS(result, paste('results_homo_bh_maxV2_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
+saveRDS(result, paste('results_covV12_bh_maxV2_homo/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #with seasonality on [switch is inside modGMS.cpp]
 #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #scenario

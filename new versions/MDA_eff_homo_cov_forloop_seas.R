@@ -18,6 +18,8 @@ library(lattice)
 sourceCpp("functions/modGMS_seas.cpp")
 source("functions/no longer app.R")
 
+timeVector <- read.csv('parameters/times.csv') #to figure out when the MDA finishes
+
 #scenario
 ##initialize input and output storage####
 testfor2j <- rep(0:100,81)
@@ -46,7 +48,7 @@ EDATon = TRUE
 ITNon = TRUE
 IRSon = FALSE
 MDAon = TRUE
-primon = FALSE
+primon = TRUE #FALSE
 MSATon = TRUE
 VACon = FALSE
 
@@ -200,12 +202,21 @@ for(i in 1:81){
     
     #grabbing the time of MDA success
     #GMSoutiR[GMSoutiR[,3]<(1/12),1]
-    MDAsuccessV1 <- GMSoutiR[,3]<(1/12)
-    MDAsuccessV2 <- GMSoutiR[,6]<(1/12)
+    # MDAsuccessV1 <- GMSoutiR[,3]<(1/12)
+    # MDAsuccessV2 <- GMSoutiR[,6]<(1/12)
+    # successMDA <- cbind(MDAsuccessV1, MDAsuccessV2)
     
-    successMDA <- cbind(MDAsuccessV1, MDAsuccessV2)
+    #calculating one year incidence per 1000 immediately after the end of MDA
+    MDAendsV1 <- which(timeVector==(2018+(tm_1+dm0)/12))
+    MDAendsV2 <- which(timeVector==(2018+(tm_2+dm1)/12))
+    DecOneYrIncV1 <- sum(GMSoutiR[MDAendsV1:(MDAendsV1+12),2])
+    TotOneYrIncV1 <- sum(GMSoutiR[MDAendsV1:(MDAendsV1+12),3])
+    DecOneYrIncV2 <- sum(GMSoutiR[MDAendsV2:(MDAendsV2+12),5])
+    TotOneYrIncV2 <- sum(GMSoutiR[MDAendsV2:(MDAendsV2+12),6])
     
-    result[[((i-1)*101)+j]] <- successMDA
+    OneYrInc <- cbind(DecOneYrIncV1, TotOneYrIncV1, DecOneYrIncV2, TotOneYrIncV2)
+    
+    result[[((i-1)*101)+j]] <- OneYrInc  #successMDA
   }
 }
 #time component #scenario

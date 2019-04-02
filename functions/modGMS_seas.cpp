@@ -254,6 +254,8 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double dCinc_det1 = ps*tau*lam_1*S_1+pr*tau*lam_1*R_1+pr*tau*lam_1*IU_1+pr*tau*lam_1*IA_1;                           //3 // Additional file: Equation no.12
   double dCinc_tot1 = ps*lam_1*S_1+pr*lam_1*R_1+pr*lam_1*IU_1+pr*lam_1*IA_1;
                                                             //44
+                                                            
+  //double dOneYrCinc_det0 = (Y>(tm_1+dm0-startyear))*(Y<=)
   
   // return the rate of change
   List output;

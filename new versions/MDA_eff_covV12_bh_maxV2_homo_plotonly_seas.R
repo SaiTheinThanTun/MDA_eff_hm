@@ -47,6 +47,7 @@ village2 <- sapply(result, function(x){
 v1m <- matrix(as.numeric(village1),nrow=101,ncol=81, byrow=TRUE)
 v2m <- matrix(as.numeric(village2),nrow=101,ncol=81, byrow=TRUE)
 v12m <- matrix(as.numeric(village1),nrow=101,ncol=81, byrow=TRUE)+matrix(as.numeric(village2),nrow=101,ncol=81, byrow=TRUE)
+v12m <- v12m[-101,] #MDA at 100% produces NA values, therefore it is removed
 
 toPlot <- melt(t(v12m))
 

@@ -2,7 +2,7 @@
 
 #MDA_eff_hm
 #X: HBR in village 2: [0-80]; HBR in village 1 is fixed at 16
-#Y: MDA coverage in both villages [0-100] %; 
+#Y: MDA coverage in both villages [0-100] %; 100% MDA coverage doesn't reallly work!!!!!!!!!! plotting neglected this!
 #Z: changing homogeneity [0-100]%; 
 #20190402
 
@@ -20,8 +20,8 @@ timeVector <- read.csv('parameters/times.csv') #to figure out when the MDA finis
 
 #scenario
 ##initialize input and output storage####
-testfor2j <- rep(0:80,101)
-testfor2i <- rep(0:100,each=81)
+testfor2j <- rep(0:80,101) #HBR
+testfor2i <- rep(0:100,each=81) #cmda_1 and cmda_2, 100% MDA coverage doesn't reallly work!!!!!!!!!!
 testfor2 <- cbind(testfor2j,testfor2i)
 # colnames(testfor2) <- c('homogen','cmda_2')
 colnames(testfor2) <- NULL

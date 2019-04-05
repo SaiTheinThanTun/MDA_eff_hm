@@ -2,6 +2,9 @@
 #since one of the results doesn't have adequate rows
 #each RDS file is read in and plotted individually
 
+#to change the coloring to better represent achievement in separate village
+#to think about low & high relative prevalence for additional 6 plots
+
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 library(deSolve)
 library(shiny)
@@ -17,11 +20,11 @@ tm_1 <- 9
 timeVector <- read.csv('parameters/times.csv')
 MDAstart <- which(timeVector==(2018+tm_1/12))
 
-cmda_1Loop <- seq(0, by=10, to=90) # to=70)
+cmda_1Loop <- seq(70, by=10, to=90) # to=70)
 successwithin <- 12 #6
 
 #tmp2 <- NA
-for(loop in 1:10){
+for(loop in 1:3){
 result <- readRDS(paste("results_homo_cov_start0_seas/results_loop_", loop,".rds", sep=""))
 
   #testing####
@@ -51,9 +54,9 @@ village2 <- sapply(result, function(x){
 # })
 
 #putting into matrix
-v1m <- matrix(as.numeric(village1),nrow=81,ncol=101, byrow=TRUE)
-v2m <- matrix(as.numeric(village2),nrow=81,ncol=101, byrow=TRUE)
-v12m <- matrix(as.numeric(village1),nrow=81,ncol=101, byrow=TRUE)+matrix(as.numeric(village2),nrow=81,ncol=101, byrow=TRUE)
+v1m <- matrix(as.numeric(village1),nrow=100,ncol=101, byrow=TRUE)
+v2m <- matrix(as.numeric(village2),nrow=100,ncol=101, byrow=TRUE)
+v12m <- matrix(as.numeric(village1),nrow=100,ncol=101, byrow=TRUE)+matrix(as.numeric(village2),nrow=100,ncol=101, byrow=TRUE)
 
 toPlot <- melt(t(v12m))
 

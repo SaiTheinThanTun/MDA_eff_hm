@@ -1,14 +1,10 @@
 #for loop for changing homogeneity between the two villages
 
 #MDA_eff_hm
-#X: HBR in village 2; 
-#Y: MDA coverage in both villages; 
-#Z: changing homogeneity; HBR in village 1 is fixed at 16
+#X: HBR in village 2: [0-80]; HBR in village 1 is fixed at 16
+#Y: MDA coverage in both villages [0-100] %; 
+#Z: changing homogeneity [0-100]%; 
 #20190402
-
-#see #scenario tag for things to change in each scenario
-#x axis variable: homogen, [0 to 100] %
-#y axis variable: cmda_2, [0 to 80] %, coverage of MDA in second village
 
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 library(deSolve)
@@ -24,13 +20,11 @@ timeVector <- read.csv('parameters/times.csv') #to figure out when the MDA finis
 
 #scenario
 ##initialize input and output storage####
-testfor2j <- rep(0:100,81)
-testfor2i <- rep(0:80,each=101)
+testfor2j <- rep(0:80,101)
+testfor2i <- rep(0:100,each=81)
 testfor2 <- cbind(testfor2j,testfor2i)
 # colnames(testfor2) <- c('homogen','cmda_2')
 colnames(testfor2) <- NULL
-#successwithin <- 6
-successwithin <- 12 #months
 
 
 #scenario
@@ -75,7 +69,7 @@ percfail2018 <- 5
 percfail2019 <- 15
 percfail2020 <- 30
 bh_max0 <- 16
-bh_max1 <- 16
+#bh_max1 <- 16 #scenario
 rhoa <- 55
 rhou <- 17
 EDATscale <- 1
@@ -87,9 +81,9 @@ covIRSi <- 90
 lossd <- 30
 dm0 <- 3
 dm1 <- 3
-cmda_1 <- cmda_1Loop[loop]#80 #90
+#cmda_1 <- cmda_1Loop[loop]#80 #90
 #cmda_2 <- 50 #scenario
-#homogen <- 0 #scenario
+homogen <- homoLoop[loop] #0 #scenario
 tm_1 <- 9
 tm_2 <- 9
 p1v <- 0.5
@@ -129,10 +123,10 @@ initprevR <- (0.001*API)
 
 
 ####for loop#####
-for(i in 1:81){
-  for(j in 1:101){
-    homogen <- testfor2[((i-1)*101)+j,1]
-    cmda_2 <- testfor2[((i-1)*101)+j,2]
+for(i in 1:101){
+  for(j in 1:81){
+    bh_max1 <- testfor2[((i-1)*81)+j,1]
+    cmda_1 <- cmda_2 <- testfor2[((i-1)*81)+j,2]
     ###other codes for running the model
     
     scenario_iR<-(c(EDATon = EDATon,
@@ -218,7 +212,7 @@ for(i in 1:81){
     
     OneYrInc <- cbind(DecOneYrIncV1, TotOneYrIncV1, DecOneYrIncV2, TotOneYrIncV2)
     
-    result[[((i-1)*101)+j]] <- OneYrInc  #successMDA
+    result[[((i-1)*81)+j]] <- OneYrInc  #successMDA
   }
 }
 #time component #scenario
@@ -227,45 +221,9 @@ for(i in 1:81){
 #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 saveRDS(result, paste('results_covV12_bh_maxV2_homo/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #with seasonality on [switch is inside modGMS.cpp]
-#saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
-#scenario
+
 
 #Analysing the data list 'results_.rds'####
-#readRDS
-# 
-# timeVector <- read.csv('parameters/times.csv')
-# MDAstart <- which(timeVector==(2018+tm_1/12))
-# 
-# #draft
-# #result[[1]][MDAstart:(MDAstart+successwithin),]
-# #sum(result[[1]][MDAstart:(MDAstart+successwithin),1])>0
-# 
-# village1 <- sapply(result, function(x){
-#   sum(x[MDAstart:(MDAstart+successwithin),1])>0
-# })
-# village2 <- sapply(result, function(x){
-#   sum(x[MDAstart:(MDAstart+successwithin),2])>0
-# })
-# 
-# #putting into matrix
-# v1m <- matrix(as.numeric(village1),nrow=80,ncol=100, byrow=TRUE)
-# #heatmap(v1m, Rowv=NA, Colv = NA)
-# #v1md <- as.data.frame(as.numeric(village1),nrow=80,ncol=100, byrow=TRUE)
-# levelplot(t(v1m))
-# 
-# v2m <- matrix(as.numeric(village2),nrow=80,ncol=100, byrow=TRUE)
-# #heatmap(v2m, Rowv=NA, Colv = NA)
-# levelplot(t(v2m))
-# 
-# v12m <- matrix(as.numeric(village1),nrow=80,ncol=100, byrow=TRUE)+matrix(as.numeric(village2),nrow=80,ncol=100, byrow=TRUE)
-# #heatmap(v12m, Rowv=NA, Colv = NA, col=heat.colors(3))
-# #write.csv(v12m,'results_homo_cov/v12m.csv')
-# 
-# new.palette=colorRampPalette(c("red","black"),space="rgb")
-# levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main="No. of villages reaching below elimination threshold")
-# 
-# png(paste('results_homo_cov/homogeniety_MDAcoverage',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# levelplot(t(v12m), col.regions=new.palette, xlab="% of homogeniety", ylab="% of MDA coverage in village 2", main=paste("No. of villages reaching below elimination threshold \n MDA coverage in village 1", cmda_1))
-# dev.off()
+#see separate file for plotting
 
 }

@@ -1,0 +1,8 @@
+#gitignore
+
+#output figures
+*.png
+
+#output data
+*.csv
+*.rds

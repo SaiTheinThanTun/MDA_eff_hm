@@ -54,7 +54,9 @@ VACon = FALSE
 
 ####non-reactive functions####
 #got from the "parameters" folder #scenario
-cmda_1Loop <- seq(70, by=10, to=90)
+#cmda_1Loop <- seq(70, by=10, to=90) #1st batch 20190407
+# cmda_1Loop <- seq(30, by=10, to=60) #2nd batch 20190409
+cmda_1Loop <- seq(10, by=10, to=20) #3rd batch 20190409
 for(loop in 1:length(cmda_1Loop)){
   
 result <- list()

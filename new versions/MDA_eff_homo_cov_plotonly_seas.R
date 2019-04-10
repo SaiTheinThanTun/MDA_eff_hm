@@ -21,13 +21,21 @@ timeVector <- read.csv('parameters/times.csv')
 MDAstart <- which(timeVector==(2018+tm_1/12))
 
 #change 1
-cmda_1Loop <- seq(70, by=10, to=90) # to=70)
+#cmda_1Loop <- seq(70, by=10, to=90) # to=70)
 # cmda_1Loop <- seq(0, by=10, to=90)
+cmda_1Loop <- seq(10, by=10, to=90)
 
-successwithin <- 12 #6
+#successwithin <- 12 #6 #no longer used
+
+#fixed color across categories in different dataset
+col_tmp <- data.frame(a=c(0,1,2,3), b=c("Zero","Village 1", "Village 2", "Both villages"))
+myColors <- c("#999999", "#E69F00", "#56B4E9", "#00008B")
+names(myColors) <- col_tmp$b #levels(col_tmp$b)
+colScale <- scale_fill_manual(name = "# of village",values = myColors)
+
 
 #change 2
-for(loop in 1:3){
+for(loop in 1:9){
 # for(loop in 1:10){
 result <- readRDS(paste("results_homo_cov_start0_seas/results_loop_", loop,".rds", sep=""))
 
@@ -60,7 +68,7 @@ v12m <- matrix(as.numeric(village1),nrow=100,ncol=101, byrow=TRUE)+matrix(as.num
 
 
 toPlot <- melt(t(v12m))
-toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("zero","Village 1", "Village 2", "Both villages"))
+toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Village 1", "Village 2", "Both villages"))
 
 #within the "successwithin" period####
 png(paste('results_homo_cov_start0_seas/newPlot_OneYrInc/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
@@ -73,9 +81,9 @@ ggplot(data=toPlot, aes(x=X1, y=X2))+
   geom_tile(aes(fill=(value)))+
   ggtitle(paste0("No. of village with less than 1 case/1000 within 1 year after MDA\nMDA coverage in village1: ",cmda_1))+
   xlab("% of homogeniety")+ylab("% of MDA coverage in village 2")+
-  theme(legend.position = "bottom")+
+  theme(legend.position = "bottom")+ colScale
   #scale_fill_manual(name="# of village", labels=c("zero", "Village 1","Village 2", "Both villages"),values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
-  scale_fill_manual(name="# of village", values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
+  #scale_fill_manual(name="# of village", values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
 )
 dev.off()
 }

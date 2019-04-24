@@ -18,6 +18,12 @@ timeVector <- read.csv('parameters/times.csv')
 
 homoLoop <- seq(0, by=10, to=100) # to=70)
 
+#fixed color across categories in different dataset
+col_tmp <- data.frame(a=c(0,1,2,3), b=c("Zero","Village 1", "Village 2", "Both villages"))
+myColors <- c("#999999", "#E69F00", "#56B4E9", "#00008B")
+names(myColors) <- col_tmp$b #levels(col_tmp$b)
+colScale <- scale_fill_manual(name = "# of village",values = myColors)
+
 
 #tmp2 <- NA
 for(loop in 1:11){
@@ -34,12 +40,12 @@ homogen <- homoLoop[loop]
 #how soon is the outcome?
 
 village1 <- sapply(result, function(x){
-  x[,2]<1
-  
+  #x[,2]<1
+  (x[,2]<1)*1+(x[,2]>=1)*0
 })
 village2 <- sapply(result, function(x){
-  x[,4]<1
-  
+  #x[,4]<1
+  (x[,4]<1)*2+(x[,4]>=1)*0
 })
 
 
@@ -50,6 +56,7 @@ v12m <- matrix(as.numeric(village1),nrow=101,ncol=81, byrow=TRUE)+matrix(as.nume
 v12m <- v12m[-101,] #MDA at 100% produces NA values, therefore it is removed
 
 toPlot <- melt(t(v12m))
+toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Village 1", "Village 2", "Both villages"))
 
 #within one year period####
 png(paste('results_covV12_bh_maxV2_homo/newPlot_OneYrInc/HBR_MDAcoverage_atHomogen_',homoLoop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
@@ -59,8 +66,8 @@ ggplot(data=toPlot, aes(x=X1, y=X2))+
   geom_tile(aes(fill=factor(value)))+
   ggtitle(paste0("No. of village with less than 1 case/1000 within 1 year after MDA\nHBR in village 1: 16; % of homogeniety: ",homogen))+
   xlab("HBR in village 2")+ylab("% of MDA coverage in both villages")+
-  theme(legend.position = "bottom")+
-  scale_fill_manual(name="# of village", labels=c("zero", "one village", "two villages"),values=c("#999999", "#E69F00", "#56B4E9"))
+  theme(legend.position = "bottom")+ colScale
+  #scale_fill_manual(name="# of village", labels=c("zero", "one village", "two villages"),values=c("#999999", "#E69F00", "#56B4E9"))
 )
 dev.off()
 }

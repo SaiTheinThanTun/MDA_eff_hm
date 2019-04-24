@@ -79,8 +79,8 @@ print(
 ggplot(data=toPlot, aes(x=X1, y=X2))+
   #geom_tile(aes(fill=factor(value)))+
   geom_tile(aes(fill=(value)))+
-  ggtitle(paste0("No. of village with less than 1 case/1000 within 1 year after MDA\nMDA coverage in village1: ",cmda_1))+
-  xlab("% of homogeniety")+ylab("% of MDA coverage in village 2")+
+  ggtitle(paste0("No. of village with less than 1 case/1000 at 1 year after MDA\nMDA coverage in village1: ",cmda_1))+
+  xlab("% of homogeneity")+ylab("% of MDA coverage in village 2")+
   theme(legend.position = "bottom")+ colScale
   #scale_fill_manual(name="# of village", labels=c("zero", "Village 1","Village 2", "Both villages"),values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
   #scale_fill_manual(name="# of village", values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))

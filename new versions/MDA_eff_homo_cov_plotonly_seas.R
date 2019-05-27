@@ -21,7 +21,7 @@ timeVector <- read.csv('parameters/times.csv')
 MDAstart <- which(timeVector==(2018+tm_1/12))
 
 #change 1
-#cmda_1Loop <- seq(70, by=10, to=90) # to=70)
+# cmda_1Loop <- seq(70, by=10, to=90) # to=70)
 # cmda_1Loop <- seq(0, by=10, to=90)
 cmda_1Loop <- seq(10, by=10, to=90)
 
@@ -36,8 +36,12 @@ colScale <- scale_fill_manual(name = "# of village",values = myColors)
 
 #change 2
 for(loop in 1:9){
+# for(loop in 1:3){
 # for(loop in 1:10){
-result <- readRDS(paste("results_homo_cov_start0_seas/results_loop_", loop,".rds", sep=""))
+result <- readRDS(paste("results_homo_cov_start0_seas/results_loop_", loop,".rds", sep="")) #default
+# result <- readRDS(paste("results_homo_cov_start0_seas_village2highAPI/results_loop_", loop,".rds", sep="")) #highAPI
+# result <- readRDS(paste("results_homo_cov_start0_seas_village2lowAPI/results_loop_", loop,".rds", sep="")) #lowAPI
+
 
   #testing####
 #loop <- 1
@@ -71,7 +75,10 @@ toPlot <- melt(t(v12m))
 toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Village 1", "Village 2", "Both villages"))
 
 #within the "successwithin" period####
+#change 3
 png(paste('results_homo_cov_start0_seas/newPlot_OneYrInc/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+# png(paste('results_homo_cov_start0_seas_village2highAPI/newPlot_OneYrInc/homogeniety_MDAcoverage_hiAPI',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #highAPI
+# png(paste('results_homo_cov_start0_seas_village2lowAPI/newPlot_OneYrInc/homogeniety_MDAcoverage_loAPI',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #lowAPI
 #at exactly "successwithin" from MDA start####
 #png(paste('results_homo_cov_start0/newPlot_exactlyAt1Yr/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 

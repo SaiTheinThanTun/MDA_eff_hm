@@ -1,0 +1,130 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.3' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      3870,        120]
+NotebookOptionsPosition[      3067,         99]
+NotebookOutlinePosition[      3421,        115]
+CellTagsIndexPosition[      3378,        112]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[""], "Input",
+ CellChangeTimes->{
+  3.76758680459886*^9},ExpressionUUID->"8f66c656-67d9-40a5-8c24-9055293a9f14"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{"eq1", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", "b"}], " ", "X", " ", 
+     RowBox[{"Y", "/", "Z"}]}], "+", 
+    RowBox[{"v", " ", "Y"}]}], "\[Equal]", "0"}]}], "\[IndentingNewLine]", 
+ RowBox[{"eq2", "=", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"b", " ", "X", " ", 
+     RowBox[{"Y", "/", "Z"}]}], "-", 
+    RowBox[{"v", " ", "Y"}]}], "\[Equal]", "0"}]}], "\[IndentingNewLine]", 
+ RowBox[{"eq3", "=", 
+  RowBox[{
+   RowBox[{"X", "+", "Y"}], "\[Equal]", "Z"}]}], "\[IndentingNewLine]", 
+ RowBox[{"Solve", "[", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"eq1", ",", "eq2", ",", "eq3"}], "}"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{"X", ",", "Y"}], "}"}]}], "]"}]}], "Input",
+ CellChangeTimes->{{3.7675867811315727`*^9, 3.767586806571136*^9}},
+ CellLabel->"In[19]:=",ExpressionUUID->"c4da721b-ec5a-4386-83f0-61e1b3ece870"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{"v", " ", "Y"}], "-", 
+   FractionBox[
+    RowBox[{"b", " ", "X", " ", "Y"}], "Z"]}], "\[Equal]", "0"}]], "Output",
+ CellChangeTimes->{{3.767586791537293*^9, 3.767586809348208*^9}},
+ CellLabel->"Out[19]=",ExpressionUUID->"03e9e8a4-27df-4976-bdf7-88f10bc09fa0"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", "v"}], " ", "Y"}], "+", 
+   FractionBox[
+    RowBox[{"b", " ", "X", " ", "Y"}], "Z"]}], "\[Equal]", "0"}]], "Output",
+ CellChangeTimes->{{3.767586791537293*^9, 3.767586809353622*^9}},
+ CellLabel->"Out[20]=",ExpressionUUID->"9316e3e0-084b-4f6d-9d88-2ad04767dacf"],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"X", "+", "Y"}], "\[Equal]", "Z"}]], "Output",
+ CellChangeTimes->{{3.767586791537293*^9, 3.7675868093561783`*^9}},
+ CellLabel->"Out[21]=",ExpressionUUID->"911bd74f-9d98-45c4-9462-412b7ab7ffac"],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", "Z"}], ",", 
+     RowBox[{"Y", "\[Rule]", "0"}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"X", "\[Rule]", 
+      FractionBox[
+       RowBox[{"v", " ", "Z"}], "b"]}], ",", 
+     RowBox[{"Y", "\[Rule]", 
+      FractionBox[
+       RowBox[{
+        RowBox[{"(", 
+         RowBox[{"b", "-", "v"}], ")"}], " ", "Z"}], "b"]}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{{3.767586791537293*^9, 3.767586809358822*^9}},
+ CellLabel->"Out[22]=",ExpressionUUID->"636e8f7b-241b-4504-a238-ed302200a8de"]
+}, Open  ]]
+},
+WindowSize->{808, 911},
+WindowMargins->{{Automatic, 496}, {6, Automatic}},
+FrontEndVersion->"11.3 for Mac OS X x86 (32-bit, 64-bit Kernel) (March 5, \
+2018)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 125, 2, 30, "Input",ExpressionUUID->"8f66c656-67d9-40a5-8c24-9055293a9f14"],
+Cell[CellGroupData[{
+Cell[708, 26, 860, 24, 94, "Input",ExpressionUUID->"c4da721b-ec5a-4386-83f0-61e1b3ece870"],
+Cell[1571, 52, 306, 7, 51, "Output",ExpressionUUID->"03e9e8a4-27df-4976-bdf7-88f10bc09fa0"],
+Cell[1880, 61, 326, 8, 51, "Output",ExpressionUUID->"9316e3e0-084b-4f6d-9d88-2ad04767dacf"],
+Cell[2209, 71, 227, 4, 34, "Output",ExpressionUUID->"911bd74f-9d98-45c4-9462-412b7ab7ffac"],
+Cell[2439, 77, 612, 19, 110, "Output",ExpressionUUID->"636e8f7b-241b-4504-a238-ed302200a8de"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+

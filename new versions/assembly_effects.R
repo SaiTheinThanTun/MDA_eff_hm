@@ -47,12 +47,12 @@ for(i in 1:length(cmda_1Loop)){
   #negative assembly effect ####
   neg_denominator <- nrow(v12m)*ncol(v12m)
   if(length(which(v12m[,1]==2))==0){
-    neg_l_bound <- nrow(v12m)
+    neg_l_bound <- 1
   } else{
     neg_l_bound <- min(which(v12m[,1]==2))
   }
   if(length(which(v12m[,ncol(v12m)]==2))==0){
-    neg_u_bound <- 1
+    neg_u_bound <- nrow(v12m)
   } else{
     neg_u_bound <- min(which(v12m[,ncol(v12m)]==2))-1  
   }

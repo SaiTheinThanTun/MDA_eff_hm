@@ -57,7 +57,8 @@ VACon = FALSE
 #cmda_1Loop <- seq(70, by=10, to=90) #1st batch 20190407
 # cmda_1Loop <- seq(30, by=10, to=60) #2nd batch 20190409
 #cmda_1Loop <- seq(10, by=10, to=20) #3rd batch 20190409
-cmda_1Loop <- seq(70, by=10, to=90) #20190522
+#cmda_1Loop <- seq(70, by=10, to=90) #20190522
+cmda_1Loop <- 81.56 #TOT
 for(loop in 1:length(cmda_1Loop)){
   
   result <- list()
@@ -76,7 +77,7 @@ for(loop in 1:length(cmda_1Loop)){
   percfail2019 <- 15
   percfail2020 <- 30
   bh_max0 <- 16
-  bh_max1 <- 20 #12 #20 is next #8 #24 #16
+  bh_max1 <- 16 #20 #12 #20 is next #8 #24 #16
   rhoa <- 55
   rhou <- 17
   EDATscale <- 1
@@ -227,10 +228,11 @@ for(loop in 1:length(cmda_1Loop)){
   #write.table(GMSoutiR[,1],'parameters/times.csv', col.names = 'time', row.names = FALSE)
   #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
   #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #default HBR_MAX: 16
-  saveRDS(result, paste('results_homo_cov_start0_seas_village2highAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
+  #saveRDS(result, paste('results_homo_cov_start0_seas_village2highAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
   #saveRDS(result, paste('results_homo_cov_start0_seas_village2lowAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 8, lowAPI
   #with seasonality on [switch is inside modGMS.cpp]
   #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
+  saveRDS(result, paste('results_TOT/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
   #scenario
   
   #Analysing the data list 'results_.rds'####

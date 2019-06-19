@@ -50,7 +50,7 @@ ui <- fluidPage(
                     wellPanel(
                       h3("Early Diagnosis and Treatment"),
                       checkboxInput(inputId="EDATon", label = "switch on scale up of EDAT ", value = TRUE),
-                      checkboxInput(inputId="primon", label = "ACT+primaquine for EDAT and MDA ", value = FALSE), #under EDAT checkbox
+                      checkboxInput(inputId="primon", label = "ACT+primaquine for EDAT and MDA ", value = TRUE), #under EDAT checkbox
                       sliderInput(inputId="EDATscale", label = "years to scale up EDAT ", value = 1, min=.25, max=3, step=.25),
                       sliderInput(inputId="covEDATi", label = "new % of all clinical cases treated", value = 70, min=0, max=100,step=5)
                     )), 
@@ -76,8 +76,8 @@ ui <- fluidPage(
                             
                      ),
                      column(3,
-                            sliderInput(inputId="cmda_1", label = "local population coverage of MDA in village 1", value = 90, min=0, max=99,step=1),
-                            sliderInput(inputId="cmda_2", label = "local population coverage of MDA in village 2", value = 50, min=0, max=99,step=1),
+                            sliderInput(inputId="cmda_1", label = "local population coverage of MDA in village 1", value = 82, min=0, max=99,step=1),
+                            sliderInput(inputId="cmda_2", label = "local population coverage of MDA in village 2", value = 64, min=0, max=99,step=1),
                             sliderInput(inputId="homogen", label = "% homogeniety", value = 0, min=0, max=100,step=1)
                      ),
                      
@@ -361,25 +361,33 @@ server <- function(input, output, session) {
     y1<-clinmonth_det0[runin:length(clinmonth_det0[,1]),2]
     y2<-clinmonth_tot0[runin:length(clinmonth_tot0[,1]),2]
     
-    plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.1),lwd=2)
+    # plot(x,y1, type='l',lty=1,col=rgb(1,0,0,alpha=0.4),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
+    # lines(x,y2, type='l',lty=1,col=rgb(1,0,0,alpha=0.4),lwd=2) #rgb(230,159,0,alpha=0.4, maxColorValue = 255) #"#E69F00"
+    plot(x,y1, type='l',lty=1,col=rgb(230,159,0,alpha=200, maxColorValue = 255),xlab = "Time",ylab="incidence per 1000 per month",main="Monthly cases per 1000 population",ylim=c(0,maxy),lwd=2)
+    lines(x,y2, type='l',lty=1,col=rgb(230,159,0,alpha=200, maxColorValue = 255),lwd=2)
     
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
+    #polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(1,0,0,alpha=0.1),border=NA)
+    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(230,159,0,alpha=102, maxColorValue = 255),border=NA)
     
     y1<-clinmonth_det1[runin:length(clinmonth_det1[,1]),2]
     y2<-clinmonth_tot1[runin:length(clinmonth_tot1[,1]),2]
-    lines(x,y1, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
-    lines(x,y2, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2)
+    # lines(x,y1, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2) #"#56B4E9"
+    # lines(x,y2, type='l',lty=1,col=rgb(0,0,1,alpha=0.4),lwd=2) #rgb(86, 180, 233,alpha=0.4, maxColorValue = 255)
+    lines(x,y1, type='l',lty=1,col=rgb(86, 180, 233,alpha=200, maxColorValue = 255),lwd=2)
+    lines(x,y2, type='l',lty=1,col=rgb(86, 180, 233,alpha=200, maxColorValue = 255),lwd=2)
     
-    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,1,alpha=0.4),border=NA)
+    # polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(0,0,1,alpha=0.4),border=NA)
+    polygon(c(x,rev(x)),c(y2,rev(y1)),col=rgb(86, 180, 233,alpha=102, maxColorValue = 255),border=NA)
     
     lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
     
     abline(h=input$API/12,col="dark blue",lty=1,lwd=1)
     abline(h=1/12,col="red",lty=3,lwd=3)
     maxy<-max(finprev0,finprev1)
-    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
-    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+    # plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(1,0,0,alpha=0.25),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+    # lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(0,0,1,alpha=0.6),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+    plot(times[(runin:length(prevalence0[,1]))],prevalence0[(runin:length(prevalence0[,1])),2], type='l',lty=1,col=rgb(230,159,0, maxColorValue = 255),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
+    lines(times[(runin:length(prevalence1[,1]))],prevalence1[(runin:length(prevalence1[,1])),2], type='l',lty=1,col=rgb(86, 180, 233, maxColorValue = 255),xlab = "Time",ylab="% prevalence",main="Predicted true prevalence",ylim=c(0,maxy),lwd=6)
     lines(c(2018,2018),c(-maxy,2*maxy),col="dark grey",lty=3,lwd=2)
     
   }

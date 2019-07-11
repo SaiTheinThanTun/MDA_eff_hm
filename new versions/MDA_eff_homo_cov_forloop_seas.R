@@ -17,8 +17,9 @@ library(TSA)
 library(Rcpp)
 library(stringr)
 library(lattice)
-sourceCpp("functions/modGMS_seas.cpp")
+sourceCpp("functions/modGMS_seas.cpp", rebuild = TRUE)
 source("functions/no longer app.R")
+options(mc.cores = parallel::detectCores())
 
 timeVector <- read.csv('parameters/times.csv') #to figure out when the MDA finishes
 
@@ -57,7 +58,7 @@ VACon = FALSE
 #cmda_1Loop <- seq(70, by=10, to=90) #1st batch 20190407
 # cmda_1Loop <- seq(30, by=10, to=60) #2nd batch 20190409
 #cmda_1Loop <- seq(10, by=10, to=20) #3rd batch 20190409
-cmda_1Loop <- seq(70, by=10, to=90) #20190522
+cmda_1Loop <- seq(10, by=10, to=90) # 20190706 #seq(70, by=10, to=90) #20190522
 for(loop in 1:length(cmda_1Loop)){
   
 result <- list()
@@ -228,7 +229,7 @@ for(i in 1:100){
 #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #default HBR_MAX: 16
 saveRDS(result, paste('results_homo_cov_start0_seas_village2highAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
-#saveRDS(result, paste('results_homo_cov_start0_seas_village2lowAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 8, lowAPI
+# saveRDS(result, paste('results_homo_cov_start0_seas_village2lowAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 8, lowAPI
 #with seasonality on [switch is inside modGMS.cpp]
 #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #scenario

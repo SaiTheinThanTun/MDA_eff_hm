@@ -123,7 +123,7 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   //double commute1 = parameters["commute1"];
   //commute1 = commute1/100;
   double homogen = parameters["homogen"];
-    homogen = homogen/(100*2);
+    homogen = homogen/100;
   double startyear=2007;
   
   // states
@@ -200,13 +200,10 @@ List modGMSrcpp(double t, NumericVector state, NumericVector parameters)
   double beta0_new = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta0;
   double beta1_new = (1-(1-eta)*effIRS*covIRS)*(1-effITN*covITN)*beta1;
   
-  //double lams = ((homogen/2)*(beta0_new*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)+beta1_new*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1))/(P0+P1));
+  double lams = ((homogen/2)*(beta0_new*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)+beta1_new*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1))/(P0+P1));
   
-  //double lam0 = ((1-homogen)*beta0_new*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)/P0)+lams;
-  //double lam1 = ((1-homogen)*beta1_new*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)/P1)+lams;
-  
-  double lam0 = (beta0_new*(1-homogen)*(((1-homogen)*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)+homogen*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1))/((1-homogen)*P0+homogen*P1)))+(beta1_new*homogen*(((1-homogen)*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)+homogen*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))/((1-homogen)*P1+homogen*P0)));
-  double lam1 = (beta1_new*(1-homogen)*(((1-homogen)*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)+homogen*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0))/((1-homogen)*P1+homogen*P0)))+(beta0_new*homogen*(((1-homogen)*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)+homogen*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1))/((1-homogen)*P0+homogen*P1)));
+  double lam0 = ((1-homogen)*beta0_new*(IC_0+Tr_0+rhoa*IA_0+rhou*IU_0)/P0)+lams;
+  double lam1 = ((1-homogen)*beta1_new*(IC_1+Tr_1+rhoa*IA_1+rhou*IU_1)/P1)+lams;
   
   // vaccine effects
   // Additional file: Equation no.15

@@ -77,7 +77,7 @@ percfail2018 <- 5
 percfail2019 <- 15
 percfail2020 <- 30
 bh_max0 <- 16
-bh_max1 <- 20 #12 #20 is next #8 #24 #16
+bh_max1 <- 12 #20 #12 #20 is next #8 #24 #16
 rhoa <- 55
 rhou <- 17
 EDATscale <- 1
@@ -227,9 +227,9 @@ for(i in 1:100){
 #outside of 'for' loop
 #write.table(GMSoutiR[,1],'parameters/times.csv', col.names = 'time', row.names = FALSE)
 #saveRDS(result, paste('results_homo_cov/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
-#saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #default HBR_MAX: 16
-saveRDS(result, paste('results_homo_cov_start0_seas_village2highAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
-# saveRDS(result, paste('results_homo_cov_start0_seas_village2lowAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 8, lowAPI
+# saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #default HBR_MAX: 16
+# saveRDS(result, paste('results_homo_cov_start0_seas_village2highAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 24, highAPI
+saveRDS(result, paste('results_homo_cov_start0_seas_village2lowAPI/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep='')) #hbr_max2: 8, lowAPI
 #with seasonality on [switch is inside modGMS.cpp]
 #saveRDS(result, paste('results_homo_cov_start0_seas/results_loop_',loop,"_",gsub("\\:","",Sys.time()),'.rds',sep=''))
 #scenario

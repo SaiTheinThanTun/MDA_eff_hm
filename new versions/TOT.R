@@ -17,8 +17,11 @@ library(TSA)
 library(Rcpp)
 library(stringr)
 library(lattice)
-sourceCpp("functions/modGMS_seas.cpp")
-source("functions/no longer app.R")
+#new formula with Ricardo 20190805
+sourceCpp("functions_latest/modGMS_seas.cpp", rebuild = TRUE)
+source("functions_latest/no longer app.R")
+# sourceCpp("functions/modGMS_seas.cpp")
+# source("functions/no longer app.R")
 
 timeVector <- read.csv('parameters/times.csv') #to figure out when the MDA finishes
 

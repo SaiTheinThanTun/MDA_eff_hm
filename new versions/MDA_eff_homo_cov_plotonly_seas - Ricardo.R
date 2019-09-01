@@ -6,6 +6,7 @@
 #to think about low & high relative prevalence for additional 6 plots
 
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
+setwd("D:/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #windows
 library(deSolve)
 library(shiny)
 library(TSA)
@@ -15,7 +16,7 @@ library(stringr)
 library(ggplot2)
 library(reshape)
 #sourceCpp("functions/modGMS.cpp")
-source("functions/no longer app.R")
+source("functions_latest/no longer app.R")
 tm_1 <- 9
 timeVector <- read.csv('parameters/times.csv')
 MDAstart <- which(timeVector==(2018+tm_1/12))
@@ -100,8 +101,8 @@ dev.off()
 loop <- 9
 
 # result <- readRDS(paste("Ricardo/results_homo_cov_start0_seas/results_loop_", loop,".rds", sep="")) #default
-# result <- readRDS(paste("Ricardo/results_homo_cov_start0_seas_village2highAPI/results_loop_", loop,".rds", sep="")) #highAPI
-result <- readRDS(paste("Ricardo/results_homo_cov_start0_seas_village2lowAPI/results_loop_", loop,".rds", sep="")) #lowAPI
+result <- readRDS(paste("Ricardo/results_homo_cov_start0_seas_village2highAPI/results_loop_", loop,".rds", sep="")) #highAPI
+# result <- readRDS(paste("Ricardo/results_homo_cov_start0_seas_village2lowAPI/results_loop_", loop,".rds", sep="")) #lowAPI
 
 
 cmda_1 <- cmda_1Loop[loop]#80 #90
@@ -128,8 +129,8 @@ toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Village
 
 #change 3
 # png(paste('Ricardo/results_homo_cov_start0_seas/_newHomogen/homogeniety_MDAcoverage_anno_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# png(paste('Ricardo/results_homo_cov_start0_seas_village2highAPI/_newHomogen/homogeniety_MDAcoverage_hiAPI_anno_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #highAPI
-png(paste('Ricardo/results_homo_cov_start0_seas_village2lowAPI/_newHomogen/homogeniety_MDAcoverage_loAPI_anno_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #lowAPI
+png(paste('Ricardo/results_homo_cov_start0_seas_village2highAPI/_newHomogen/homogeniety_MDAcoverage_hiAPI_anno_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #highAPI
+# png(paste('Ricardo/results_homo_cov_start0_seas_village2lowAPI/_newHomogen/homogeniety_MDAcoverage_loAPI_anno_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #lowAPI
 
 print(
   ggplot(data=toPlot, aes(x=X1, y=X2))+
@@ -141,12 +142,19 @@ print(
     #same HBR
     # geom_hline(yintercept=78, color='red')+
     # geom_text(aes(x=40,y=83,label="Baseline threshold for village 2 (78%)"), color='white')+
+    
+    #dont include this
     #geom_vline(xintercept = 62, color='black')+
     #geom_text(aes(x=40,y=75,label="Baseline threshold for village 2 (78%)"))+
     
     #lower HBR in village 2
-    geom_hline(yintercept=5, color='red')+
-    geom_text(aes(x=40,y=10,label="Baseline threshold for village 2 (5%)"), color='white')+
+    # geom_hline(yintercept=5, color='red')+
+    # geom_text(aes(x=40,y=10,label="Baseline threshold for village 2 (5%)"), color='white')+
+    # geom_text(aes(x=75,y=41,label="60% connectedness, 30% village 2 MDA"), color='red', size=4)+
+    # annotate("point", x=61, y= 30, shape=18, color='red', size=8)+
+    
+    #higher HBR in village 2
+    geom_text(aes(x=65,y=41,label="Negative assembly effect for village 1"), color='red', size=4)+
     
     theme(legend.position = "bottom")+ colScale
 )

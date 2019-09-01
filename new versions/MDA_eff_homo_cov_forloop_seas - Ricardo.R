@@ -10,8 +10,8 @@
 #y axis variable: cmda_2, [0 to 80] %, coverage of MDA in second village
 #z: cmda_1, [70, 80, 90] %
 
-#setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
-setwd("D:/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #windows
+setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
+# setwd("D:/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #windows
 library(deSolve)
 library(shiny)
 library(TSA)

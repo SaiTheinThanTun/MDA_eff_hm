@@ -6,7 +6,7 @@
 #to think about low & high relative prevalence for additional 6 plots
 
 setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
-setwd("D:/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #windows
+setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm") #windows
 library(deSolve)
 library(shiny)
 library(TSA)

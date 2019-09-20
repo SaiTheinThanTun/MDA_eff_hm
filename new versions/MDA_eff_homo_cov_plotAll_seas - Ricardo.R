@@ -5,7 +5,7 @@
 #to change the coloring to better represent achievement in separate village
 #to think about low & high relative prevalence for additional 6 plots
 
-#setwd("~/OneDrive/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
+#setwd("~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
 setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm") #windows
 library(deSolve)
 library(shiny)
@@ -90,9 +90,8 @@ png(paste('Ricardo/facet/',"Fig2_facet","_",gsub("\\:","",Sys.time()),'.png',sep
 #png(paste('results_homo_cov_start0/newPlot_exactlyAt1Yr/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 
 print(
-  ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
-    #geom_tile(aes(fill=factor(value)))+
-    facet_grid(P2Incidence~P1Coverage, labeller=label_both)+
+  p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
+    facet_grid(P2Incidence~P1Coverage)+
     geom_tile(aes(fill=(value)))+
     ggtitle(paste0("No. of patch with less than 1 case/1000 at 1 year after MDA\nMDA coverage in patch 1"))+
     xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
@@ -100,16 +99,11 @@ print(
     geom_text(
       data    = dat_text,
       mapping = aes(x=10,y=90, label=label)
-      # mapping = aes(x = -Inf, y = Inf, label = label),
-      # hjust   = -0.3,
-      # vjust   = .7
-    )
-      # mapping = aes(x = 90, y = 50, label = label)
-      #hjust   = -0.9,
-      # vjust   = -3
-      #+ colScale
-  #scale_fill_manual(name="# of village", labels=c("zero", "Village 1","Village 2", "Both villages"),values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
-  #scale_fill_manual(name="# of village", values=c("#999999", "#E69F00", "#56B4E9", "#00008B"))
+    )+
+    theme(plot.margin = unit(c(0,2,0,0), "lines"))
+p
+grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.94, "npc"), y = unit(0.50, "npc"), rot=270)
+
 )
 dev.off()
 

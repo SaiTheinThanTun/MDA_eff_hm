@@ -15,6 +15,7 @@ library(stringr)
 #library(lattice)
 library(ggplot2)
 library(reshape)
+library(grid)
 #sourceCpp("functions/modGMS.cpp")
 source("functions_latest/no longer app.R")
 tm_1 <- 9
@@ -88,26 +89,26 @@ dat_text <- data.frame(
 # png(paste('Ricardo/results_homo_cov_start0_seas_village2highAPI/_newHomogen/homogeniety_MDAcoverage_hiAPI',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300) #highAPI
 png(paste('Ricardo/facet/',"Fig2_facet","_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1800, width=1800, units= "px", res=300) #lowAPI
 #png(paste('results_homo_cov_start0/newPlot_exactlyAt1Yr/homogeniety_MDAcoverage_',cmda_1Loop[loop],"_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-
-print(
-  p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
-    facet_grid(P2Incidence~P1Coverage)+
-    geom_tile(aes(fill=(value)))+
-    ggtitle(paste0("No. of patch with less than 1 case/1000 at 1 year after MDA\nMDA coverage in patch 1"))+
-    xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
-    theme(legend.position = "bottom")+ colScale+
-    geom_text(
-      data    = dat_text,
-      mapping = aes(x=10,y=90, label=label)
-    )+
-    theme(plot.margin = unit(c(0,2,0,0), "lines"))
-p
-grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.94, "npc"), y = unit(0.50, "npc"), rot=270)
-
-)
+p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
+  facet_grid(P2Incidence~P1Coverage)+
+  geom_tile(aes(fill=(value)))+
+  ggtitle(paste0("                            MDA coverage in patch 1"))+
+  xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
+  theme(legend.position = "bottom")+ colScale+
+  geom_label(
+    data    = dat_text,
+    mapping = aes(x=10,y=90, label=label),
+    label.padding = unit(0.15, "lines"),label.r = unit(0.08, "lines")
+  )+
+  theme(plot.margin = unit(c(0,2,0,0), "lines"))
+print(p)
+grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.95, "npc"), y = unit(0.50, "npc"), rot=270)
 dev.off()
 
-
+# geom_text(
+#   data    = dat_text,
+#   mapping = aes(x=10,y=90, label=label)
+# )
 
 #Figure 3: How to read the phase plot####
 loop <- 4

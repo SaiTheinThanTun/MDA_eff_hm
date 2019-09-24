@@ -158,7 +158,8 @@ ggplot(data=toPlot, aes(x=X1, y=X2))+
   xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
   theme(legend.position = "bottom")+ colScale+
   geom_hline(yintercept=14, color='red', size=1.3)+
-  geom_text(data=annotag,aes(x=x,y=y,label=lab))
+  geom_label(data=annotag,aes(x=x,y=y,label=lab),label.r = unit(0.08, "lines"))
+  # geom_text(data=annotag,aes(x=x,y=y,label=lab))
 )
 dev.off()
 

@@ -5,8 +5,8 @@
 #to change the coloring to better represent achievement in separate village
 #to think about low & high relative prevalence for additional 6 plots
 
-#setwd("~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
-setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm") #windows
+setwd("~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
+#setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm") #windows
 library(deSolve)
 library(shiny)
 library(TSA)
@@ -26,7 +26,7 @@ MDAstart <- which(timeVector==(2018+tm_1/12))
 cmda_1Loop <- rep(seq(70, by=10, to=90) ,3)
 
 #fixed color across categories in different dataset
-col_tmp <- data.frame(a=c(0,1,2,3), b=c("Zero","Patch 1", "Patch 2", "Both patches"))
+col_tmp <- data.frame(a=c(0,1,2,3), b=c("Neither patch","Patch 1", "Patch 2", "Both patches"))
 myColors <- c("#999999", "#E69F00", "#56B4E9", "#00008B")
 names(myColors) <- col_tmp$b #levels(col_tmp$b)
 colScale <- scale_fill_manual(name = "# of patch",values = myColors)
@@ -65,7 +65,7 @@ for(loop in 1:length(cmda_1Loop)){
   
   
   toPlot <- melt(t(v12m))
-  toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Patch 1", "Patch 2", "Both patches"))
+  toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Neither patch","Patch 1", "Patch 2", "Both patches"))
   toPlot$P1Coverage <- cmda_1Loop[loop]
   toPlot$P2Incidence <- incidenceLoop[loop]
   
@@ -140,7 +140,7 @@ v2m_tmp <- rbind(matrix(0,nrow = 10,ncol=101),v2m[-(91:100),])
 v12m <- v1m_tmp+v2m_tmp
 
 toPlot <- melt(t(v12m))
-toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Zero","Patch 1", "Patch 2", "Both patches"))
+toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Neither patch","Patch 1", "Patch 2", "Both patches"))
 toPlot$P1Coverage <- cmda_1Loop[loop]
 toPlot$P2Incidence <- incidenceLoop[loop]
 
@@ -315,9 +315,9 @@ for(i in 1:length(cmda_1Loop)){
 }
 
 #plot the results for hotspots####
-plot(cmda_1Loop, pos_assembly, ylim = c(min(-neg_assembly),max(pos_assembly)), type = 'l',col="blue", main = "B. Assembly effects between\n a hotspot and a non-hotspot", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-lines(cmda_1Loop, -neg_assembly, col='red')
+plot(cmda_1Loop, pos_assembly, ylim = c(min(-neg_assembly),max(pos_assembly)), type = 'l',col="red", main = "B. Assembly effects between\n a hotspot and a non-hotspot", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
+lines(cmda_1Loop, -neg_assembly, col='blue')
 abline(h=0)
-legend(55,-.22, legend = c("Hotspot","Non-hotspot"), col=c("blue","red"), lty = 1, cex=.7)
+legend(55,-.22, legend = c("Hotspot","Non-hotspot"), col=c("red","blue"), lty = 1, cex=.7)
 
 dev.off()

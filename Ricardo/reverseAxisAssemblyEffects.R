@@ -3,7 +3,12 @@
 #x: MDA coverage in village1: from 10 to 90
 #y: assembly effect (fig1: pos and neg separate, fig2: overall)
 #20190527
-setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/")
+mac <- 1
+if(mac){
+  path <- "~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"
+} else { path <- "D:/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"}
+
+setwd(path)
 
 cmda_1Loop <- seq(10, by=10, to=90) 
 pos_assembly <- NA

@@ -2,7 +2,7 @@
 #20200117
 #Sai Thein Than Tun
 
-mac <- 1
+mac <- 0
 if(mac){
   path <- "~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"
 } else { path <- "D:/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"}
@@ -212,4 +212,16 @@ dev.off()
 png(paste('Ricardo/results_homo_cov_start0_seas/assemblyEffects/netAssemblyEffects_pch_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 plot(cmda_1Loop, assemblyEffect, type = 'p', pch=16, main = "Assembly effect between two patches \nof the same disease incidence", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
 abline(h=0)
+dev.off()
+
+
+#fig 1 and 2 combined
+png(paste('Ricardo/results_village2lowAPI_reverseAxis/assemblyEffects/assemblyEffects_pch_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+
+plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'p',pch=3,col="red", xlab = "MDA coverage in patch 1", ylab = "Assembly effect in patch 2")
+points(cmda_1Loop, negAssemblyEffect, col='blue', pch=1)
+points(cmda_1Loop, assemblyEffect, pch=16)
+abline(h=0)
+legend(55,-22, legend = c("Hotspot","Non-hotspot"), col=c("red","blue"), pch = c(3,1), cex=.7)
+
 dev.off()

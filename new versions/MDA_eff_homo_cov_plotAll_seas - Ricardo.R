@@ -5,8 +5,13 @@
 #to change the coloring to better represent achievement in separate village
 #to think about low & high relative prevalence for additional 6 plots
 
-setwd("~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/") #mac
-#setwd("C:/Users/andro/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm") #windows
+mac <- 0
+if(mac){
+  path <- "~/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"
+} else { path <- "D:/OneDrive - Nexus365/MORU/Projects/TCE_MDA effect/MDA_eff_hm/"}
+
+setwd(path)
+
 library(deSolve)
 library(shiny)
 library(TSA)
@@ -95,6 +100,7 @@ p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
   ggtitle(paste0("                            MDA coverage in patch 1"))+
   xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
   theme(legend.position = "bottom")+ colScale+
+  theme(strip.text.y = element_text(angle=90))+
   geom_label(
     data    = dat_text,
     mapping = aes(x=10,y=90, label=label),
@@ -102,7 +108,10 @@ p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
   )+
   theme(plot.margin = unit(c(0,2,0,0), "lines"))
 print(p)
-grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.95, "npc"), y = unit(0.50, "npc"), rot=270)
+grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.95, "npc"), y = unit(0.50, "npc"), rot=90)
+#grid.text("X",x = unit(0.59, "npc"), y = unit(0.58, "npc"))
+grid.points(x = unit(0.60, "npc"), y = unit(0.57, "npc"), pch=4, gp=gpar(col="red"))
+
 dev.off()
 
 # geom_text(

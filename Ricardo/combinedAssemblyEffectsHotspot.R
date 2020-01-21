@@ -92,30 +92,6 @@ for(i in 1:length(cmda_1Loop)){
   negAssemblyEffect[i] <- (length(which(v12m %in% c(2,3))) - (100-5)*101)/101
 }
 
-#plot the results for hotspots####
-#fig 1
-png(paste('Ricardo/results_village2lowAPI_reverseAxis/assemblyEffects/assemblyEffects_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# plot(cmda_1Loop, pos_assembly, ylim = c(min(-neg_assembly),max(pos_assembly)), type = 'l',col="blue", main = "Assembly effects \nwhen a hotspot and a non-hotspot are connected", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-# lines(cmda_1Loop, -neg_assembly, col='red')
-plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'l',col="blue", main = "Assembly effects \nwhen a hotspot and a non-hotspot are connected", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-lines(cmda_1Loop, negAssemblyEffect, col='red')
-abline(h=0)
-legend(55,-22, legend = c("Hotspot","Non-hotspot"), col=c("blue","red"), lty = 1, cex=.7)
-dev.off()
-
-#fig1 points
-png(paste('Ricardo/results_village2lowAPI_reverseAxis/assemblyEffects/assemblyEffects_pch_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'p',pch=3,col="red", main = "Assembly effects \nwhen a hotspot and a non-hotspot are connected", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-points(cmda_1Loop, negAssemblyEffect, col='blue', pch=1)
-abline(h=0)
-legend(55,-22, legend = c("Hotspot","Non-hotspot"), col=c("red","blue"), pch = c(3,1), cex=.7)
-dev.off()
-
-#fig 2
-# png(paste('results_homo_cov_start0_seas/newPlot_OneYrInc/netAssemblyEffects_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# plot(cmda_1Loop, pos_assembly-neg_assembly, type = 'l', main = "Net assembly effect", xlab = "MDA coverage in village 1", ylab = "Assembly effect")
-# abline(h=0)
-# dev.off()
 
 
 
@@ -193,35 +169,21 @@ for(i in 1:length(cmda_1Loop)){
 }
 
 #plot the results
-#fig 1
-# png(paste('Ricardo/results_homo_cov_start0_seas/assemblyEffects/assemblyEffects_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# plot(cmda_1Loop, neg_assembly, ylim = c(min(neg_assembly),max(neg_assembly)), type = 'l',col="red", main = "Total area of negative assembly effects in village 2", xlab = "MDA coverage in village 1", ylab = "Assembly effect")
-# lines(cmda_1Loop, neg_assembly, col='red')
-# legend(50,.7, legend = c("Positive","Negative"), col=c("blue","red"), lty = 1)
-# dev.off()
-#fig 2
-png(paste('Ricardo/results_homo_cov_start0_seas/assemblyEffects/netAssemblyEffects_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-# plot(cmda_1Loop, pos_assembly-neg_assembly, type = 'l', main = "Assembly effect between two patches \nof the same disease incidence", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-plot(cmda_1Loop, assemblyEffect, type = 'l', main = "Assembly effect between two patches \nof the same disease incidence", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-abline(h=0)
-# abline(v=78, lty=2)
-# legend(10,-.015,lty=2,legend="Baseline intervention threshold")
-dev.off()
-
-#fig 2, points
-png(paste('Ricardo/results_homo_cov_start0_seas/assemblyEffects/netAssemblyEffects_pch_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
-plot(cmda_1Loop, assemblyEffect, type = 'p', pch=16, main = "Assembly effect between two patches \nof the same disease incidence", xlab = "MDA coverage in the other patch", ylab = "Assembly effect")
-abline(h=0)
-dev.off()
-
-
-#fig 1 and 2 combined
-png(paste('Ricardo/results_village2lowAPI_reverseAxis/assemblyEffects/assemblyEffects_pch_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+#fig 4A and 4B combined
+png(paste('Ricardo/facet/Fig4_assemblyEffects_fused_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 
 plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'p',pch=3,col="red", xlab = "MDA coverage in patch 1", ylab = "Assembly effect in patch 2")
 points(cmda_1Loop, negAssemblyEffect, col='blue', pch=1)
 points(cmda_1Loop, assemblyEffect, pch=16)
 abline(h=0)
-legend(55,-22, legend = c("Hotspot","Non-hotspot"), col=c("red","blue"), pch = c(3,1), cex=.7)
+#65,-20
+legend("bottomright", legend = c("Higher","Identical","Lower"), col=c("red", "black","blue"), pch = c(3,16,1), cex=.7, title="Incidence in patch 2\ncompared to patch 1", box.lty = 0)
+grid.text("D",x = unit(0.718, "npc"), y = unit(0.595, "npc"))
+grid.text("E",x = unit(0.815, "npc"), y = unit(0.68, "npc"))
+grid.text("F",x = unit(0.915, "npc"), y = unit(0.7, "npc"))
+
+grid.text("G",x = unit(0.718, "npc"), y = unit(0.41, "npc"))
+grid.text("H",x = unit(0.815, "npc"), y = unit(0.47, "npc"))
+grid.text("I",x = unit(0.915, "npc"), y = unit(0.525, "npc"))
 
 dev.off()

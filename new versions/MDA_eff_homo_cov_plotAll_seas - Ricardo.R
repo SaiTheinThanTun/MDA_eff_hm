@@ -110,7 +110,7 @@ p <- ggplot(data=toPlotFinal, aes(x=X1, y=X2))+
 print(p)
 grid.text("Incidence in patch 2 compared to patch 1",x = unit(0.95, "npc"), y = unit(0.50, "npc"), rot=90)
 #grid.text("X",x = unit(0.59, "npc"), y = unit(0.58, "npc"))
-grid.points(x = unit(0.60, "npc"), y = unit(0.57, "npc"), pch=4, gp=gpar(col="red"))
+grid.points(x = unit(0.60, "npc"), y = unit(0.57, "npc"), pch=8, gp=gpar(col="red", cex=.5))
 
 dev.off()
 

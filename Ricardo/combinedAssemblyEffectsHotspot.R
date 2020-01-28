@@ -1,6 +1,7 @@
 #definitive version for figure 4
 #20200117
 #Sai Thein Than Tun
+library(grid)
 
 mac <- 0
 if(mac){
@@ -177,7 +178,7 @@ points(cmda_1Loop, negAssemblyEffect, col='blue', pch=1)
 points(cmda_1Loop, assemblyEffect, pch=16)
 abline(h=0)
 #65,-20
-legend("bottomright", legend = c("Higher","Identical","Lower"), col=c("red", "black","blue"), pch = c(3,16,1), cex=.7, title="Incidence in patch 2\ncompared to patch 1", box.lty = 0)
+legend("bottomright", legend = c("Higher (hotspot)","Identical","Lower (non-hotspot)"), col=c("red", "black","blue"), pch = c(3,16,1), cex=.7, title="Incidence in patch 2\ncompared to patch 1", box.lty = 0)
 grid.text("D",x = unit(0.718, "npc"), y = unit(0.595, "npc"))
 grid.text("E",x = unit(0.815, "npc"), y = unit(0.68, "npc"))
 grid.text("F",x = unit(0.915, "npc"), y = unit(0.7, "npc"))

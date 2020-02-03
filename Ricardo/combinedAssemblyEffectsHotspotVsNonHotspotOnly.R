@@ -14,8 +14,8 @@ cmda_1Loop <- seq(10, by=10, to=90)
 pos_assembly <- NA
 posAssemblyEffect <- NA
 for(i in 1:length(cmda_1Loop)){
-  # result <- readRDS(paste0("Ricardo/results_village2lowAPI_reverseAxis/results_loop_",i,".rds")) #original figure
-  result <- readRDS(paste0("Ricardo/results_homo_cov_start0_seas_village2highAPI/results_loop_",i,".rds"))
+  result <- readRDS(paste0("Ricardo/results_village2lowAPI_reverseAxis/results_loop_",i,".rds")) #original figure
+  
   
   
   #reciprocated
@@ -50,9 +50,9 @@ for(i in 1:length(cmda_1Loop)){
   
   pos_numerator <- sum(v12m[pos_l_bound:pos_u_bound,]%in%c(2,3))
   pos_assembly[i] <- pos_numerator/pos_denominator
-
-  # posAssemblyEffect[i] <- (length(which(v12m %in% c(2,3))) - (100-79)*101)/101 #original
-  posAssemblyEffect[i] <- (length(which(v12m %in% c(2,3))) - (100-100)*101)/101
+  
+  posAssemblyEffect[i] <- (length(which(v12m %in% c(2,3))) - (100-79)*101)/101 #original
+  
 }
 
 neg_assembly <- NA
@@ -144,10 +144,10 @@ for(i in 1:length(cmda_1Loop)){
   pos_assembly[i] <- pos_numerator/pos_denominator
   
   if(length(which(v12m[,ncol(v12m)]==3))!=0){
-  if(pos_u_bound < min(which(v12m[,ncol(v12m)]==3))){
-    pos_assembly[i] <- 0
-    # pos_l_bound <- pos_u_bound
-  } 
+    if(pos_u_bound < min(which(v12m[,ncol(v12m)]==3))){
+      pos_assembly[i] <- 0
+      # pos_l_bound <- pos_u_bound
+    } 
   }
   
   #negative assembly effect ####
@@ -173,34 +173,15 @@ for(i in 1:length(cmda_1Loop)){
 
 #plot the results
 #fig 4A and 4B combined
-png(paste('Ricardo/facet/Fig4_assemblyEffects_fused_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
+png(paste('Ricardo/facet/FigSS_assemblyEffects_fused_',gsub("\\:","",Sys.time()),'.png',sep=''),height= 1600, width=1800, units= "px", res=300)
 
-#plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'p',pch=3,col="red", xlab = "MDA coverage in patch 1", ylab = "Assembly effect in patch 2")
-plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),10), type = 'p',pch=3,col="red", xlab = "MDA coverage in patch 1", ylab = "Assembly effect in patch 2")
+plot(cmda_1Loop, posAssemblyEffect, ylim = c(min(negAssemblyEffect),max(posAssemblyEffect)), type = 'p',pch=3,col="red", xlab = "MDA coverage in patch 1", ylab = "Assembly effect in patch 2")
 points(cmda_1Loop, negAssemblyEffect, col='blue', pch=1)
-points(cmda_1Loop, assemblyEffect, pch=16)
+#points(cmda_1Loop, assemblyEffect, pch=16)
 abline(h=0)
 #65,-20
 # original
-# legend("bottomright", legend = c("Higher (hotspot)","Identical","Lower (non-hotspot)"), col=c("red", "black","blue"), pch = c(3,16,1), cex=.7, title="Incidence in patch 2\ncompared to patch 1", box.lty = 0)
-# grid.text("D",x = unit(0.718, "npc"), y = unit(0.595, "npc"))
-# grid.text("E",x = unit(0.815, "npc"), y = unit(0.68, "npc"))
-# grid.text("F",x = unit(0.915, "npc"), y = unit(0.7, "npc"))
-# 
-# grid.text("G",x = unit(0.718, "npc"), y = unit(0.41, "npc"))
-# grid.text("H",x = unit(0.815, "npc"), y = unit(0.47, "npc"))
-# grid.text("I",x = unit(0.915, "npc"), y = unit(0.525, "npc"))
-legend("bottomright", legend = c("Higher","Identical","Lower"), col=c("red", "black","blue"), pch = c(3,16,1), cex=.7, title="Incidence in patch 2\ncompared to patch 1", box.lty = 0)
-grid.text("A",x = unit(0.718, "npc"), y = unit(0.73, "npc"))
-grid.text("B",x = unit(0.81, "npc"), y = unit(0.755, "npc"))
-grid.text("C",x = unit(0.9, "npc"), y = unit(0.69, "npc"))
+legend("bottomright", legend = c("Hotspot","Non-hotspot"), col=c("red", "blue"), pch = c(3,1), cex=.7, title="Patch 2 regarded as:", box.lty = 0)
 
-grid.text("D",x = unit(0.718, "npc"), y = unit(0.61, "npc"))
-grid.text("E",x = unit(0.81, "npc"), y = unit(0.65, "npc"))
-grid.text("F",x = unit(0.9, "npc"), y = unit(0.77, "npc"))
-
-grid.text("G",x = unit(0.718, "npc"), y = unit(0.42, "npc"))
-grid.text("H",x = unit(0.81, "npc"), y = unit(0.48, "npc"))
-grid.text("I",x = unit(0.9, "npc"), y = unit(0.54, "npc"))
 
 dev.off()

@@ -330,3 +330,52 @@ abline(h=0)
 legend(55,-.22, legend = c("Hotspot","Non-hotspot"), col=c("red","blue"), lty = 1, cex=.7)
 
 dev.off()
+
+
+#for presentation: panel G, index 4, original####
+#Figure 3: How to read the phase plot####
+loop <- 4
+toPlot <- toPlotList[[4]]
+# result <- readRDS(paste("Ricardo/facet/results_loop_", loop,".rds", sep="")) #facet
+# 
+# 
+# cmda_1 <- cmda_1Loop[loop]#80 #90
+# 
+# 
+# village1 <- sapply(result, function(x){
+#   (x[,2]<1)*1+(x[,2]>=1)*0
+#   
+# })
+# village2 <- sapply(result, function(x){
+#   (x[,4]<1)*2+(x[,4]>=1)*0
+#   
+# })
+
+#putting into matrix
+#change 3
+v1m <- matrix(as.numeric(village1),nrow=100,ncol=101, byrow=TRUE)
+v2m <- matrix(as.numeric(village2),nrow=100,ncol=101, byrow=TRUE)
+
+toPlot <- melt(t(v12m))
+toPlot$value <- factor(toPlot$value, levels=c(0,1,2,3), labels=c("Neither patch","Patch 1", "Patch 2", "Both patches"))
+toPlot$P1Coverage <- cmda_1Loop[loop]
+toPlot$P2Incidence <- incidenceLoop[loop]
+# 
+# annotag <- data.frame(
+#   x=  c(50,85,85,25,50),
+#   y=  c(22,30,70,70,8),
+#   lab=c("a","b","c","d","e")
+# )
+
+png(paste('Ricardo/facet/',"ppt_panelG","_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1500, width=1500, units= "px", res=300)
+print(
+  ggplot(data=toPlot, aes(x=X1, y=X2))+
+    geom_tile(aes(fill=(value)))+
+    ggtitle(paste0("MDA coverage in patch 1: 70% \nLower incidence in patch 2"))+
+    xlab("% of connectedness")+ylab("% of MDA coverage in patch 2")+
+    theme(legend.position = "bottom")+ colScale
+    # geom_hline(yintercept=14, color='red', size=1.3)+
+    # geom_label(data=annotag,aes(x=x,y=y,label=lab),label.r = unit(0.08, "lines"))
+  # geom_text(data=annotag,aes(x=x,y=y,label=lab))
+)
+dev.off()

@@ -156,7 +156,7 @@ toPlot$P2Incidence <- incidenceLoop[loop]
 annotag <- data.frame(
   x=  c(50,85,85,25,50),
   y=  c(22,30,70,70,8),
-  lab=c("a","b","c","d","e")
+  lab=c("i","ii","iii","iv","v")
 )
 
 png(paste('Ricardo/facet/',"Fig3_Explanatory","_",gsub("\\:","",Sys.time()),'.png',sep=''),height= 1500, width=1500, units= "px", res=300)
